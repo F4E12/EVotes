@@ -36,6 +36,9 @@
 5. **Set up the database**
     - Open the `.env` file in a text editor.
     - If you are using XAMPP, ensure your MySQL server is running.
+
+      <img width="834" height="541" alt="image" src="https://github.com/user-attachments/assets/10d609c9-fa60-429f-9381-ed6c5e86f7a8" />
+
     - Update the database credentials in the `.env` file. For a default XAMPP setup, you would typically use:
         ```env
         DB_CONNECTION=mysql
