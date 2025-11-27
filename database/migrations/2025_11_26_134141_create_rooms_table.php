@@ -23,8 +23,8 @@ return new class extends Migration {
             $table->string('unique_token')->unique();
 
             // Date fields
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
 
             // Boolean fields
             $table->boolean('is_revealed')->default(false);
