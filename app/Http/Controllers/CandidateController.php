@@ -48,7 +48,7 @@ class CandidateController extends Controller
             'photo_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $photoPath = $candidate->photo;
+        $photoPath = $candidate->photo_url;
         if ($request->hasFile('photo_url')) {
             if ($photoPath) {
                 Storage::disk('public')->delete($photoPath);
@@ -71,8 +71,12 @@ class CandidateController extends Controller
      */
     public function destroy(Candidate $candidate)
     {
-        if ($candidate->photo) {
-            Storage::disk('public')->delete($candidate->photo);
+        if ($candidate->room->host_id !== auth()->id()) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this candidate.');
+        }
+
+        if ($candidate->photo_url) {
+            Storage::disk('public')->delete($candidate->photo_url);
         }
 
         $candidate->delete();

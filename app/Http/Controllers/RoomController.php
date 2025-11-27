@@ -75,8 +75,14 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        $candidates = $room->candidates;
-        return view('pages.room.show', compact('room', 'candidates'));
+        if ($room->host_id !== auth()->id()) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+        } else {
+            $candidates = $room->candidates;
+            return view('pages.room.show', compact('room', 'candidates'));
+        }
+
+
     }
 
     /**
@@ -84,6 +90,10 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
+        if ($room->host_id !== auth()->id()) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+        }
+
         return view('pages.room.edit', compact('room'));
     }
 
@@ -92,6 +102,10 @@ class RoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
+        if ($room->host_id !== auth()->id()) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -109,6 +123,10 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
+        if ($room->host_id !== auth()->id()) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+        }
+
         // Hapus foto kandidat sebelum menghapus kandidat
         foreach ($room->candidates as $candidate) {
             if ($candidate->photo) {
@@ -126,6 +144,10 @@ class RoomController extends Controller
      */
     public function close(Room $room)
     {
+        if ($room->host_id !== auth()->id()) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+        }
+
         $room->update(['end_date' => now()]);
         return redirect()->route('rooms.show', $room);
     }
@@ -138,4 +160,4 @@ class RoomController extends Controller
         return Str::random(6);
     }
 }
- //
+//
