@@ -22,6 +22,11 @@ class Room extends Model
         'is_closed',
     ];
 
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
+
     // Relationships
 
     /**

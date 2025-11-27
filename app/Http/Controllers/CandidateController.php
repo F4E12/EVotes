@@ -3,48 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidate;
+use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CandidateController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Room $room)
     {
-        //
-    }
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Candidate $candidate)
-    {
-        //
-    }
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('photos', 'public');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Candidate $candidate)
-    {
-        //
+        $room->candidates()->create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'photo' => $photoPath,
+        ]);
+
+        return redirect()->route('rooms.show', $room);
     }
 
     /**
@@ -52,7 +39,27 @@ class CandidateController extends Controller
      */
     public function update(Request $request, Candidate $candidate)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $photoPath = $candidate->photo;
+        if ($request->hasFile('photo')) {
+            if ($photoPath) {
+                Storage::disk('public')->delete($photoPath);
+            }
+            $photoPath = $request->file('photo')->store('photos', 'public');
+        }
+
+        $candidate->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'photo' => $photoPath,
+        ]);
+
+        return redirect()->route('rooms.show', $candidate->room);
     }
 
     /**
@@ -60,6 +67,12 @@ class CandidateController extends Controller
      */
     public function destroy(Candidate $candidate)
     {
-        //
+        if ($candidate->photo) {
+            Storage::disk('public')->delete($candidate->photo);
+        }
+
+        $candidate->delete();
+
+        return redirect()->route('rooms.show', $candidate->room);
     }
 }
