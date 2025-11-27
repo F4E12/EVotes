@@ -15,24 +15,30 @@
                         <p><strong>Start Date:</strong> {{ $room->start_date->format('d M Y') }}</p>
                         <p><strong>End Date:</strong> {{ $room->end_date->format('d M Y') }}</p>
                         <p class="mt-2"><strong>Room Token:</strong>
-                            <span class="font-mono bg-gray-200 text-gray-800 px-2 py-1 rounded">{{ $room->unique_token }}</span>
+                            <span
+                                class="font-mono bg-gray-200 text-gray-800 px-2 py-1 rounded">{{ $room->unique_token }}</span>
                         </p>
                     </div>
 
                     <div class="mt-6 flex items-center space-x-4">
-                        <a href="{{ route('rooms.edit', $room) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <a href="{{ route('rooms.edit', $room) }}"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Edit Room
                         </a>
-                        <form action="{{ route('rooms.close', $room) }}" method="POST" onsubmit="return confirm('Are you sure you want to close voting for this room?');">
+                        <form action="{{ route('rooms.close', $room) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to close voting for this room?');">
                             @csrf
-                            <button type="submit" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+                            <button type="submit"
+                                class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
                                 Close Voting
                             </button>
                         </form>
-                        <form action="{{ route('rooms.destroy', $room) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this room? This action cannot be undone.');">
+                        <form action="{{ route('rooms.destroy', $room) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to delete this room? This action cannot be undone.');">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            <button type="submit"
+                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                 Delete Room
                             </button>
                         </form>
@@ -48,17 +54,21 @@
                             <div class="flex items-center justify-between mt-2 p-2 border-b">
                                 <div class="flex items-center">
                                     @if ($candidate->photo_url)
-                                        <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}" class="w-16 h-16 object-cover rounded-full">
+                                        <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}"
+                                            class="w-16 h-16 object-cover rounded-full">
                                     @endif
                                     <div class="ml-4">
                                         <p class="font-semibold">{{ $candidate->name }}</p>
-                                        <p class="text-sm text-gray-600"><strong>Vision:</strong> {{ $candidate->vision }}</p>
-                                        <p class="text-sm text-gray-600"><strong>Mission:</strong> {{ $candidate->mission }}</p>
+                                        <p class="text-sm text-gray-600"><strong>Vision:</strong> {{ $candidate->vision }}
+                                        </p>
+                                        <p class="text-sm text-gray-600"><strong>Mission:</strong> {{ $candidate->mission }}
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="flex items-center space-x-2">
                                     {{-- Edit button/modal will go here --}}
-                                    <form action="{{ route('candidates.destroy', $candidate) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this candidate?');">
+                                    <form action="{{ route('candidates.destroy', $candidate) }}" method="POST"
+                                        onsubmit="return confirm('Are you sure you want to delete this candidate?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
@@ -70,7 +80,8 @@
 
                     <div class="mt-6">
                         <h4 class="text-xl font-bold">Add New Candidate</h4>
-                        <form action="{{ route('rooms.candidates.store', $room) }}" method="POST" enctype="multipart/form-data" class="mt-4">
+                        <form action="{{ route('rooms.candidates.store', $room) }}" method="POST"
+                            enctype="multipart/form-data" class="mt-4">
                             @csrf
                             <div>
                                 <label for="name" class="block font-medium text-sm text-gray-700">Name</label>
@@ -89,7 +100,8 @@
                                 <input id="photo_url" name="photo_url" type="file" class="mt-1 block w-full">
                             </div>
                             <div class="mt-4">
-                                <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                <button type="submit"
+                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                                     Add Candidate
                                 </button>
                             </div>

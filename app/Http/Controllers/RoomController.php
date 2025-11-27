@@ -138,3 +138,4 @@ class RoomController extends Controller
         return Str::random(6);
     }
 }
+ //

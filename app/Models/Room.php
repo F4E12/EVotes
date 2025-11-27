@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Room extends Model
 {
@@ -15,48 +13,32 @@ class Room extends Model
         'host_id',
         'title',
         'description',
-        'unique_token',
         'start_date',
         'end_date',
-        'is_revealed',
-        'is_closed',
+        'unique_token',
     ];
-
-    protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
-    ];
-
-    // Relationships
 
     /**
-     * A Room belongs to a User (the host).
+     * The attributes that should be cast.
+     *
+     * @var array
      */
-    public function host(): BelongsTo
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
+
+    public function host()
     {
         return $this->belongsTo(User::class, 'host_id');
     }
 
-    /**
-     * A Room has many Articles.
-     */
-    public function articles(): HasMany
-    {
-        return $this->hasMany(Article::class, 'related_room_id');
-    }
-
-    /**
-     * A Room has many Candidates.
-     */
-    public function candidates(): HasMany
+    public function candidates()
     {
         return $this->hasMany(Candidate::class);
     }
 
-    /**
-     * A Room has many Votes.
-     */
-    public function votes(): HasMany
+    public function votes()
     {
         return $this->hasMany(Vote::class);
     }

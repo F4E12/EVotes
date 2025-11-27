@@ -14,22 +14,29 @@
                         {{-- Room Details --}}
                         <div>
                             <label for="title" class="block font-medium text-sm text-gray-700">{{ __('Title') }}</label>
-                            <input id="title" class="block mt-1 w-full" type="text" name="title" value="{{ old('title') }}" required autofocus />
+                            <input id="title" class="block mt-1 w-full" type="text" name="title"
+                                value="{{ old('title') }}" required autofocus />
                         </div>
 
                         <div class="mt-4">
-                            <label for="description" class="block font-medium text-sm text-gray-700">{{ __('Description') }}</label>
-                            <textarea id="description" class="block mt-1 w-full" name="description" required>{{ old('description') }}</textarea>
+                            <label for="description"
+                                class="block font-medium text-sm text-gray-700">{{ __('Description') }}</label>
+                            <textarea id="description" class="block mt-1 w-full" name="description"
+                                required>{{ old('description') }}</textarea>
                         </div>
 
                         <div class="mt-4">
-                            <label for="start_date" class="block font-medium text-sm text-gray-700">{{ __('Start Date') }}</label>
-                            <input id="start_date" class="block mt-1 w-full" type="date" name="start_date" value="{{ old('start_date') }}" required />
+                            <label for="start_date"
+                                class="block font-medium text-sm text-gray-700">{{ __('Start Date') }}</label>
+                            <input id="start_date" class="block mt-1 w-full" type="datetime-local" name="start_date"
+                                value="{{ old('start_date') }}" required />
                         </div>
 
                         <div class="mt-4">
-                            <label for="end_date" class="block font-medium text-sm text-gray-700">{{ __('End Date') }}</label>
-                            <input id="end_date" class="block mt-1 w-full" type="date" name="end_date" value="{{ old('end_date') }}" required />
+                            <label for="end_date"
+                                class="block font-medium text-sm text-gray-700">{{ __('End Date') }}</label>
+                            <input id="end_date" class="block mt-1 w-full" type="datetime-local" name="end_date"
+                                value="{{ old('end_date')}}" required />
                         </div>
 
                         {{-- Candidates --}}
@@ -39,14 +46,20 @@
                                 {{-- Candidate accordion items will be injected here --}}
                             </div>
                             <div class="flex justify-end mt-4">
-                                <button type="button" id="add-candidate" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-4 rounded-full">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                <button type="button" id="add-candidate"
+                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-4 rounded-full">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4"></path>
+                                    </svg>
                                 </button>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <button type="submit" class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <button type="submit"
+                                class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 {{ __('Create Room') }}
                             </button>
                         </div>
@@ -58,12 +71,21 @@
 
     <template id="candidate-template">
         <div class="candidate-item border rounded mt-2">
-            <div class="accordion-header cursor-pointer p-4 bg-gray-100 hover:bg-gray-200 flex justify-between items-center">
+            <div
+                class="accordion-header cursor-pointer p-4 bg-gray-100 hover:bg-gray-200 flex justify-between items-center">
                 <h4 class="font-semibold">Candidate</h4>
                 <div class="flex items-center">
-                    <svg class="accordion-arrow w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    <button type="button" class="remove-candidate bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-full ml-4" style="display: none;">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                    <svg class="accordion-arrow w-6 h-6 transform transition-transform" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                    <button type="button"
+                        class="remove-candidate bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-full ml-4"
+                        style="display: none;">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -97,10 +119,10 @@
             function addCandidate() {
                 const clone = template.content.cloneNode(true);
                 const item = clone.querySelector('.candidate-item');
-                
+
                 const header = item.querySelector('.accordion-header h4');
                 header.textContent = `Candidate ${candidateIndex + 1}`;
-                
+
                 item.querySelectorAll('[name]').forEach(el => {
                     el.name = el.name.replace('__INDEX__', candidateIndex);
                 });
@@ -112,7 +134,7 @@
                     body.style.display = 'block';
                     arrow.classList.add('rotate-180');
                 }
-                
+
                 container.appendChild(clone);
                 updateRemoveButtons();
                 candidateIndex++;
@@ -134,7 +156,7 @@
                     const item = header.closest('.candidate-item');
                     const body = item.querySelector('.accordion-body');
                     const arrow = item.querySelector('.accordion-arrow');
-                    
+
                     if (body.style.display === 'block') {
                         body.style.display = 'none';
                         arrow.classList.remove('rotate-180');
@@ -146,16 +168,16 @@
 
                 if (e.target.closest('.remove-candidate')) {
                     e.target.closest('.candidate-item').remove();
-                    
+
                     const items = container.querySelectorAll('.candidate-item');
                     candidateIndex = 0;
                     items.forEach(item => {
-                       item.querySelector('.accordion-header h4').textContent = `Candidate ${candidateIndex + 1}`;
-                       item.querySelectorAll('[name]').forEach(el => {
+                        item.querySelector('.accordion-header h4').textContent = `Candidate ${candidateIndex + 1}`;
+                        item.querySelectorAll('[name]').forEach(el => {
                             const newName = el.name.replace(/candidates\[\d+\]/, `candidates[${candidateIndex}]`);
                             el.name = newName;
-                       });
-                       candidateIndex++;
+                        });
+                        candidateIndex++;
                     });
                     updateRemoveButtons();
                 }
