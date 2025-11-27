@@ -43,22 +43,24 @@ class CandidateController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'vision' => 'required|string',
+            'mission' => 'required|string',
+            'photo_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $photoPath = $candidate->photo;
-        if ($request->hasFile('photo')) {
+        if ($request->hasFile('photo_url')) {
             if ($photoPath) {
                 Storage::disk('public')->delete($photoPath);
             }
-            $photoPath = $request->file('photo')->store('photos', 'public');
+            $photoPath = $request->file('photo_url')->store('photos', 'public');
         }
 
         $candidate->update([
             'name' => $request->name,
-            'description' => $request->description,
-            'photo' => $photoPath,
+            'vision' => $request->vision,
+            'mission' => $request->mission,
+            'photo_url' => $photoPath,
         ]);
 
         return redirect()->route('rooms.show', $candidate->room);
