@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     })->name('history');
 
 
-    //ROOM & CANIDATE MANAGEMENT ROUTES
+    //ROOM & CANDIDATE MANAGEMENT ROUTES
     Route::post('rooms', action: [RoomController::class, 'store'])->name('rooms.store');
     Route::get('rooms/{room_id}', [RoomController::class, 'show'])->name('rooms.show');
     Route::get('rooms/{room_id}/edit', [RoomController::class, 'edit'])->name('rooms.edit');
