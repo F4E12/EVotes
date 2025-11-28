@@ -6,6 +6,7 @@ use App\Models\Candidate;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Str;
 
 class CandidateController extends Controller
 {
@@ -31,22 +32,46 @@ class CandidateController extends Controller
             'photo_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        CandidateController::createCandidate($request, $room, $request->file('photo_url'));
+
+        return redirect()->route('rooms.show', $room->room_id);
+    }
+
+    public static function createCandidate(Request $request, Room $room, $photoFile = null)
+    {
         $photoPath = null;
-        if ($request->hasFile('photo_url')) {
-            $photoPath = $request->file('photo_url')->store('photos', 'public');
+        if ($photoFile) {
+            $photoPath = $photoFile->store('photos', 'public');
         }
 
         $room->candidates()->create([
+            'candidate_id' => CandidateController::generateCandidateID(),
             'name' => $request->name,
             'vision' => $request->vision,
             'mission' => $request->mission,
             'photo_url' => $photoPath,
         ]);
+    }
+    private static function generateCandidateID()
+    {
+        do {
+            $candidateID = 'CN_' . Str::upper(Str::random(10));
+        } while (Candidate::where('candidate_id', $candidateID)->exists());
 
-        return redirect()->route('rooms.show', $room->room_id);
+        return $candidateID;
+    }
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Candidate $candidate)
+    {
+        if ($candidate->room->host_id !== auth()->id()) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this candidate.');
+        }
+
+        return view('pages.candidate.edit', compact('candidate'));
     }
 
-    // TODO : add view for edit candidate
     /**
      * Update the specified resource in storage.
      */
@@ -103,4 +128,6 @@ class CandidateController extends Controller
 
         return redirect()->route('rooms.show', $candidate->room->room_id);
     }
+
+
 }

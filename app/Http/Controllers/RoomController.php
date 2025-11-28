@@ -46,7 +46,7 @@ class RoomController extends Controller
         ]);
 
         $room = Room::create([
-            'room_id' => $this->generateRoomID(),
+            'room_id' => RoomController::generateRoomID(),
             'host_id' => auth()->id(),
             'title' => $request->title,
             'description' => $request->description,
@@ -56,20 +56,25 @@ class RoomController extends Controller
         ]);
 
         foreach ($request->candidates as $candidateData) {
-            $photoPath = null;
-            if (isset($candidateData['photo_url'])) {
-                $photoPath = $candidateData['photo_url']->store('photos', 'public');
+
+            $photoFile = null;
+            if (isset($candidateData['photo_url']) && $candidateData['photo_url'] instanceof \Illuminate\Http\UploadedFile) {
+                $photoFile = $candidateData['photo_url'];
+                unset($candidateData['photo_url']); // Remove from array if it's an UploadedFile, as it will be handled by $photoFile
             }
 
-            $room->candidates()->create([
-                'name' => $candidateData['name'],
-                'vision' => $candidateData['vision'],
-                'mission' => $candidateData['mission'],
-                'photo_url' => $photoPath,
-            ]);
+            $candidateRequest = new Request($candidateData);
+            CandidateController::createCandidate($candidateRequest, $room, $photoFile);
         }
-
         return redirect()->route('rooms.show', $room->room_id);
+    }
+    public static function generateRoomID()
+    {
+        do {
+            $roomID = 'RM_' . (Str::random(10));
+        } while (Room::where('room_id', $roomID)->exists());
+
+        return $roomID;
     }
 
     /**
@@ -216,13 +221,5 @@ class RoomController extends Controller
         }
     }
 
-    public function generateRoomID()
-    {
-        do {
-            $roomID = 'RM_' . (Str::random(10));
-        } while (Room::where('room_id', $roomID)->exists());
 
-        return $roomID;
-    }
 }
-

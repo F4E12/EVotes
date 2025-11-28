@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
 
     
     Route::post('rooms/{room_id}/candidates', [CandidateController::class, 'store'])->name('rooms.candidates.store');
+    Route::get('candidates/{candidate}/edit', [CandidateController::class, 'edit'])->name('candidates.edit');
     Route::put('candidates/{candidate}', [CandidateController::class, 'update'])->name('candidates.update');
     Route::delete('candidates/{candidate}', [CandidateController::class, 'destroy'])->name('candidates.destroy');
 

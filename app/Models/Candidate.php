@@ -12,6 +12,7 @@ class Candidate extends Model
     use HasFactory;
 
     protected $fillable = [
+        'candidate_id',
         'room_id',
         'name',
         'photo_url',
