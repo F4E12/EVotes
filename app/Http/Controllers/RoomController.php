@@ -157,7 +157,7 @@ class RoomController extends Controller
         // Hapus foto kandidat sebelum menghapus kandidat
         foreach ($room->candidates as $candidate) {
             if ($candidate->photo) {
-                Storage::delete('public/photos/' . $candidate->photo);
+                Storage::delete('public/photos/' . $candidate->photo_url);
             }
         }
 

@@ -7,16 +7,15 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @if (session('error'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block sm:inline">{{ session('error') }}</span>
+                </div>
+            @endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-2xl font-bold mb-4">Your Rooms</h3>
-                    @if (session('error'))
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
-                            role="alert">
-                            <strong class="font-bold">Error!</strong>
-                            <span class="block sm:inline">{{ session('error') }}</span>
-                        </div>
-                    @endif
                     @if($rooms->isEmpty())
                         <p>You haven't created any rooms yet.</p>
                         <a href="{{ route('host-a-room') }}"
