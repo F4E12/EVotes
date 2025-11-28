@@ -52,7 +52,7 @@ class CandidateController extends Controller
             'photo_url' => $photoPath,
         ]);
     }
-    private static function generateCandidateID()
+    public static function generateCandidateID()
     {
         do {
             $candidateID = 'CN_' . Str::upper(Str::random(10));
