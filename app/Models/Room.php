@@ -10,6 +10,7 @@ class Room extends Model
     use HasFactory;
 
     protected $fillable = [
+        'room_id',
         'host_id',
         'title',
         'description',

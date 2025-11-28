@@ -12,8 +12,18 @@ class CandidateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Room $room)
+    public function store(Request $request, string $room_id)
     {
+        $room = Room::where('room_id', $room_id)->firstOrFail();
+
+        if (!$room) {
+            return redirect()->route('dashboard')->with('error', 'Room not found.');
+        }
+
+        if ($room->host_id !== auth()->id()) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'vision' => 'required|string',
@@ -33,14 +43,19 @@ class CandidateController extends Controller
             'photo_url' => $photoPath,
         ]);
 
-        return redirect()->route('rooms.show', $room);
+        return redirect()->route('rooms.show', $room->room_id);
     }
 
+    // TODO : add view for edit candidate
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Candidate $candidate)
     {
+        if ($candidate->room->host_id !== auth()->id()) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this candidate.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'vision' => 'required|string',
@@ -63,7 +78,7 @@ class CandidateController extends Controller
             'photo_url' => $photoPath,
         ]);
 
-        return redirect()->route('rooms.show', $candidate->room);
+        return redirect()->route('rooms.show', $candidate->room->room_id);
     }
 
     /**
@@ -75,12 +90,17 @@ class CandidateController extends Controller
             return redirect()->route('dashboard')->with('error', 'You do not have access to this candidate.');
         }
 
+
+        if ($candidate->room->candidates()->count() <= 2) {
+            return redirect()->route('rooms.show', $candidate->room->room_id)->with('error', 'A room must have at least two candidates.');
+        }
+
         if ($candidate->photo_url) {
             Storage::disk('public')->delete($candidate->photo_url);
         }
 
         $candidate->delete();
 
-        return redirect()->route('rooms.show', $candidate->room);
+        return redirect()->route('rooms.show', $candidate->room->room_id);
     }
 }
