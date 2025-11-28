@@ -78,8 +78,13 @@
                                     <div class="flex items-center justify-between mt-2 p-2 border-b">
                                         <div class="flex items-center">
                                             @if ($candidate->photo_url)
-                                                <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}"
-                                                    class="w-12 h-12 object-cover rounded-full">
+                                                @if (filter_var($candidate->photo_url, FILTER_VALIDATE_URL))
+                                                    <img src="{{ $candidate->photo_url }}" alt="{{ $candidate->name }}"
+                                                        class="w-12 h-12 object-cover rounded-full">
+                                                @else
+                                                    <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}"
+                                                        class="w-12 h-12 object-cover rounded-full">
+                                                @endif
                                             @else
                                                 <div
                                                     class="w-12 h-12 flex items-center justify-center bg-gray-300 rounded-full text-gray-600 font-bold">
@@ -109,8 +114,13 @@
                             <div class="flex items-center justify-between mt-2 p-2 border-b">
                                 <div class="flex items-center">
                                     @if ($candidate->photo_url)
-                                        <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}"
-                                            class="w-16 h-16 object-cover rounded-full">
+                                        @if (filter_var($candidate->photo_url, FILTER_VALIDATE_URL))
+                                            <img src="{{ $candidate->photo_url }}" alt="{{ $candidate->name }}"
+                                                class="w-16 h-16 object-cover rounded-full">
+                                        @else
+                                            <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}"
+                                                class="w-16 h-16 object-cover rounded-full">
+                                        @endif
                                     @else
                                         <div
                                             class="w-16 h-16 flex items-center justify-center bg-gray-300 rounded-full text-gray-600 font-bold">
