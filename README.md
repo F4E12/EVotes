@@ -50,10 +50,11 @@
         ```
     - Create a new database named `evotes` in phpMyAdmin (or your preferred database management tool).
 
-6. **Generate application key and run migrations**
+6. **Generate application key, run migrations, and Seed the database**
     ```bash
     php artisan key:generate
     php artisan migrate
+    php artisan db:seed
     ```
 
 7. **Create storage symlink**
