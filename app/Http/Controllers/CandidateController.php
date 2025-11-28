@@ -63,8 +63,14 @@ class CandidateController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Candidate $candidate)
+    public function edit(string $candidate_id)
     {
+        $candidate = Candidate::where('candidate_id', $candidate_id)->firstOrFail();
+
+        if (!$candidate) {
+            return redirect()->route('dashboard')->with('error', 'Candidate not found.');
+        }
+
         if ($candidate->room->host_id !== auth()->id()) {
             return redirect()->route('dashboard')->with('error', 'You do not have access to this candidate.');
         }
@@ -75,8 +81,14 @@ class CandidateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Candidate $candidate)
+    public function update(Request $request, string $candidate_id)
     {
+        $candidate = Candidate::where('candidate_id', $candidate_id)->firstOrFail();
+
+        if (!$candidate) {
+            return redirect()->route('dashboard')->with('error', 'Candidate not found.');
+        }
+
         if ($candidate->room->host_id !== auth()->id()) {
             return redirect()->route('dashboard')->with('error', 'You do not have access to this candidate.');
         }
