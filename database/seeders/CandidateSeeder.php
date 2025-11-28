@@ -32,7 +32,7 @@ class CandidateSeeder extends Seeder
             foreach ($rooms as $room) {
                 for ($i = 1; $i <= 3; $i++) {
                     Candidate::create([
-                        'candidate_id' => Str::random(10),
+                        'candidate_id' => CandidateController::generateCandidateID(),
                         'room_id' => $room->id,
                         'name' => $faker->name,
                         'photo_url' => $faker->randomElement($photoUrls),

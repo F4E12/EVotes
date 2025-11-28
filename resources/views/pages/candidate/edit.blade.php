@@ -38,8 +38,13 @@
                         <div class="mt-4">
                             <label for="photo_url" class="block font-medium text-sm text-gray-700">Photo</label>
                             @if ($candidate->photo_url)
-                                <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}"
-                                    class="w-24 h-24 object-cover rounded-full mt-2">
+                                @if (filter_var($candidate->photo_url, FILTER_VALIDATE_URL))
+                                    <img src="{{ $candidate->photo_url }}" alt="{{ $candidate->name }}"
+                                        class="w-16 h-16 object-cover rounded-full">
+                                @else
+                                    <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}"
+                                        class="w-16 h-16 object-cover rounded-full">
+                                @endif
                                 <p class="text-sm text-gray-600 mt-1">Current Photo</p>
                             @endif
                             <input id="photo_url" name="photo_url" type="file" class="mt-1 block w-full">

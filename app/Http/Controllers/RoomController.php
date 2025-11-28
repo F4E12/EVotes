@@ -225,7 +225,7 @@ class RoomController extends Controller
     /**
      * Generate a unique token.
      */
-    private function generateToken()
+    public static function generateToken()
     {
         do {
             $token = Str::random(6);
