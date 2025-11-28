@@ -157,7 +157,11 @@ class RoomController extends Controller
      */
     private function generateToken()
     {
-        return Str::random(6);
+        do {
+            $token = Str::random(6);
+        } while (Room::where('unique_token', $token)->exists());
+
+        return $token;
     }
 }
 //
