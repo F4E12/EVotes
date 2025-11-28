@@ -55,8 +55,14 @@
     php artisan key:generate
     php artisan migrate
     ```
-
-7. **Run the application**
+    
+7. **Create storage symlink**
+    ```bash
+        php artisan storage:link
+    ```
+    This command creates a symbolic link from `public/storage` to `storage/app/public`, allowing images to be publicly accessible.
+    
+8. **Run the application**
     Open two terminal windows and run the following commands:
     ```bash
     # Terminal 1
