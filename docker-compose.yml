@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  app:
+    image: laravel-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/var/www
+    environment: APP_ENV=local
+      APP_DEBUG=true
+      APP_URL=http://localhost:8000
+      DB_CONNECTION=pgsql
+      DB_HOST=db.bnnmcvpyrsemmkcfacvr.supabase.co
+      DB_PORT=6543
+      DB_DATABASE=evotes
+      DB_USERNAME=postgres.bnnmcvpyrsemmkcfacvr
+      DB_PASSWORD=d9Kb4ADwuhrJ7cw
+      DATABASE_URL=postgresql://postgres.bnnmcvpyrsemmkcfacvr:d9Kb4ADwuhrJ7cw@aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres
+      DB_SSLMODE=require
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  node:
+    image: node:20-alpine
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    ports:
+      - "5173:5173"
+    command: npm run dev
