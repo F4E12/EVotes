@@ -121,8 +121,13 @@ class CandidateController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Candidate $candidate)
+    public function destroy(string $candidate_id)
     {
+        $candidate = Candidate::where('candidate_id', $candidate_id)->firstOrFail();
+
+        if (!$candidate) {
+            return redirect()->route('dashboard')->with('error', 'Candidate not found.');
+        }
         if ($candidate->room->host_id !== auth()->id()) {
             return redirect()->route('dashboard')->with('error', 'You do not have access to this candidate.');
         }

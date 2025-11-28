@@ -23,9 +23,6 @@ Route::middleware('auth')->group(function () {
         return view('pages.history');
     })->name('history');
 
-    Route::get('/vote/{room_id}', [RoomController::class, 'vote'])->name('rooms.vote');
-
-
 
     //ROOM & CANIDATE MANAGEMENT ROUTES
     Route::post('rooms', action: [RoomController::class, 'store'])->name('rooms.store');
@@ -41,7 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::post('rooms/{room_id}/candidates', [CandidateController::class, 'store'])->name('rooms.candidates.store');
     Route::get('candidates/{candidate_id}/edit', [CandidateController::class, 'edit'])->name('candidates.edit');
     Route::put('candidates/{candidate_id}', [CandidateController::class, 'update'])->name('candidates.update');
-    Route::delete('candidates/{candidate}', [CandidateController::class, 'destroy'])->name('candidates.destroy');
+    Route::delete('candidates/{candidate_id}', [CandidateController::class, 'destroy'])->name('candidates.destroy');
 
 
 

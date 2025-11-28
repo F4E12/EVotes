@@ -126,8 +126,9 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center space-x-2">
-                                    <a href="{{ route('candidates.edit', $candidate->candidate_id) }}" class="text-blue-500 hover:text-blue-700">Edit</a>
-                                    <form action="{{ route('candidates.destroy', $candidate) }}" method="POST"
+                                    <a href="{{ route('candidates.edit', $candidate->candidate_id) }}"
+                                        class="text-blue-500 hover:text-blue-700">Edit</a>
+                                    <form action="{{ route('candidates.destroy', $candidate->candidate_id) }}" method="POST"
                                         onsubmit="return confirm('Are you sure you want to delete this candidate?');">
                                         @csrf
                                         @method('DELETE')
