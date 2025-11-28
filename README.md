@@ -55,10 +55,10 @@
     php artisan key:generate
     php artisan migrate
     ```
-    
+
 7. **Create storage symlink**
     ```bash
-        php artisan storage:link
+    php artisan storage:link
     ```
     This command creates a symbolic link from `public/storage` to `storage/app/public`, allowing images to be publicly accessible.
     
