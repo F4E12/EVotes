@@ -14,7 +14,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
     Route::get('/dashboard', [RoomController::class, 'index'])->name('dashboard');
     Route::get('/host-a-room', [RoomController::class, 'create'])->name('host-a-room');
     Route::get('/join-a-room', function () {
@@ -24,8 +23,8 @@ Route::middleware('auth')->group(function () {
         return view('pages.history');
     })->name('history');
 
-
     Route::get('/vote/{room_id}', [RoomController::class, 'vote'])->name('rooms.vote');
+
 
 
     //ROOM & CANIDATE MANAGEMENT ROUTES
@@ -37,6 +36,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('rooms/{room_id}/close', [RoomController::class, 'close'])->name('rooms.close');
 
+    Route::patch('rooms/{room_id}/toggle-reveal', [RoomController::class, 'toggleReveal'])->name('rooms.toggle-reveal');
 
     Route::post('rooms/{room_id}/candidates', [CandidateController::class, 'store'])->name('rooms.candidates.store');
     Route::get('candidates/{candidate_id}/edit', [CandidateController::class, 'edit'])->name('candidates.edit');

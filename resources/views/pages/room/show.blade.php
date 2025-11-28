@@ -52,9 +52,54 @@
                                 Delete Room
                             </button>
                         </form>
+
+                        <form action="{{ route('rooms.toggle-reveal', $room->room_id) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to {{ $room->is_revealed ? 'hide' : 'reveal' }} the results? This action will be visible to all participants.');">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit"
+                                class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+                                {{ $room->is_revealed ? 'Hide Results' : 'Reveal Results' }}
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
+
+            @if ($room->is_revealed)
+                <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
+                        <h3 class="text-2xl font-bold">Results</h3>
+                        <div class="mt-4">
+                            @if ($candidates->isEmpty())
+                                <p>No candidates available yet.</p>
+                            @else
+                                @foreach ($candidates as $candidate)
+                                    <div class="flex items-center justify-between mt-2 p-2 border-b">
+                                        <div class="flex items-center">
+                                            @if ($candidate->photo_url)
+                                                <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}"
+                                                    class="w-12 h-12 object-cover rounded-full">
+                                            @else
+                                                <div
+                                                    class="w-12 h-12 flex items-center justify-center bg-gray-300 rounded-full text-gray-600 font-bold">
+                                                    <i class="fas fa-user text-xl"></i>
+                                                </div>
+                                            @endif
+                                            <div class="ml-4">
+                                                <p class="font-semibold">{{ $candidate->name }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="text-lg font-bold">
+                                            {{ $candidate->vote_count }} Votes
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">

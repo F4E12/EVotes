@@ -91,11 +91,13 @@ class RoomController extends Controller
             return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
         }
 
-        $candidates = $room->candidates;
+        $candidates = $room->candidates->map(function ($candidate) {
+            $candidate->vote_count = $candidate->votes()->count();
+            return $candidate;
+        });
+
         $status = $this->getRoomStatus($room);
         return view('pages.room.show', compact('room', 'candidates', 'status'));
-
-
     }
 
     /**
@@ -194,6 +196,26 @@ class RoomController extends Controller
         }
 
         return redirect()->route('rooms.show', parameters: $room->room_id);
+    }
+
+    /**
+     * Toggle the is_revealed status for the specified room.
+     */
+    public function toggleReveal(string $room_id)
+    {
+        $room = Room::where('room_id', $room_id)->firstOrFail();
+
+        if (!$room) {
+            return redirect()->route('dashboard')->with('error', 'Room not found.');
+        }
+
+        if ($room->host_id !== auth()->id()) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+        }
+
+        $room->update(['is_revealed' => !$room->is_revealed]);
+
+        return redirect()->route('rooms.show', $room->room_id);
     }
 
     /**
