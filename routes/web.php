@@ -36,8 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('rooms/{room_id}', [RoomController::class, 'destroy'])->name('rooms.destroy');
 
     Route::post('rooms/{room_id}/close', [RoomController::class, 'close'])->name('rooms.close');
-    Route::post('rooms/{room_id}/candidates', [CandidateController::class, 'store'])->name('rooms.candidates.store');
+
     
+    Route::post('rooms/{room_id}/candidates', [CandidateController::class, 'store'])->name('rooms.candidates.store');
     Route::put('candidates/{candidate}', [CandidateController::class, 'update'])->name('candidates.update');
     Route::delete('candidates/{candidate}', [CandidateController::class, 'destroy'])->name('candidates.destroy');
 

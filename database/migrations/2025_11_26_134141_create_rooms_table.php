@@ -23,6 +23,9 @@ return new class extends Migration {
             // uniqueToken: Should be unique
             $table->string('unique_token')->unique();
 
+            // isRevealed: Boolean to indicate if results are revealed
+            $table->boolean('is_revealed')->default(false);
+
             // Date fields
             $table->dateTime('start_date');
             $table->dateTime('end_date');
