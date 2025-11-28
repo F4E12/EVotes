@@ -15,7 +15,10 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $rooms = Room::where('host_id', auth()->id())->get();
+        $rooms = Room::where('host_id', auth()->id())->get()->map(function ($room) {
+            $room->status = $this->getRoomStatus($room);
+            return $room;
+        });
 
         return view('pages.dashboard', compact('rooms'));
     }
@@ -97,7 +100,8 @@ class RoomController extends Controller
         });
 
         $status = $this->getRoomStatus($room);
-        return view('pages.room.show', compact('room', 'candidates', 'status'));
+        $totalVotes = $candidates->sum('vote_count');
+        return view('pages.room.show', compact('room', 'candidates', 'status', 'totalVotes'));
     }
 
     /**

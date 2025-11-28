@@ -29,6 +29,28 @@
                                     <div>
                                         <h4 class="font-bold text-lg">{{ $room->title }}</h4>
                                         <p class="text-gray-600 mt-2">{{ Str::limit($room->description, 100) }}</p>
+                                        <div class="mt-2">
+                                            @php
+                                                $statusColor = '';
+                                                switch ($room->status) {
+                                                    case 'upcoming':
+                                                        $statusColor = 'bg-yellow-200 text-yellow-800';
+                                                        break;
+                                                    case 'ongoing':
+                                                        $statusColor = 'bg-green-200 text-green-800';
+                                                        break;
+                                                    case 'ended':
+                                                        $statusColor = 'bg-red-200 text-red-800';
+                                                        break;
+                                                    default:
+                                                        $statusColor = 'bg-gray-200 text-gray-800';
+                                                        break;
+                                                }
+                                            @endphp
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColor }}">
+                                                {{ ucfirst($room->status) }}
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="mt-4">
                                         <a href="{{ route('rooms.show', $room->room_id) }}"

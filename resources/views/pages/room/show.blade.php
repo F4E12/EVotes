@@ -20,8 +20,45 @@
                     <div class="mt-4">
                         <p><strong>Start Date:</strong> {{ $room->start_date->format('d M Y H:i') }}</p>
                         <p><strong>End Date:</strong> {{ $room->end_date->format('d M Y H:i') }}</p>
-                        <p class="mt-2"><strong>Status:</strong> <span
-                                class="font-semibold">{{ ucfirst($status) }}</span></p>
+
+
+
+                        <p class="mt-6"><strong>Status:</strong>
+                            @php
+                                $statusColor = '';
+                                switch ($status) {
+                                    case 'upcoming':
+                                        $statusColor = 'bg-yellow-200 text-yellow-800';
+                                        break;
+                                    case 'ongoing':
+                                        $statusColor = 'bg-green-200 text-green-800';
+                                        break;
+                                    case 'ended':
+                                        $statusColor = 'bg-red-200 text-red-800';
+                                        break;
+                                    default:
+                                        $statusColor = 'bg-gray-200 text-gray-800';
+                                        break;
+                                }
+                            @endphp
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium {{ $statusColor }}">
+                                {{ ucfirst($status) }}
+                            </span>
+                        </p>
+
+                        <p class="mt-2"><strong>Votes Revealed:</strong>
+                            @php
+                                $revealedColorClass = $room->is_revealed ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800';
+                            @endphp
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium {{ $revealedColorClass }}">
+                                {{ $room->is_revealed ? 'Yes' : 'No' }}
+                            </span>
+                        </p>
+                        <p class="mt-2"><strong>Total Votes:</strong> <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-200 text-blue-800">{{ $totalVotes }}</span>
+                        </p>
                         <p class="mt-2"><strong>Room Token:</strong>
                             <span
                                 class="font-mono bg-gray-200 text-gray-800 px-2 py-1 rounded">{{ $room->unique_token }}</span>
