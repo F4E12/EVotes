@@ -16,7 +16,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-2xl font-bold mb-4">Your Rooms</h3>
-                    @if($rooms->isEmpty())
+                    @if ($rooms->isEmpty())
                         <p>You haven't created any rooms yet.</p>
                         <a href="{{ route('host-a-room') }}"
                             class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -47,7 +47,8 @@
                                                         break;
                                                 }
                                             @endphp
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColor }}">
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColor }}">
                                                 {{ ucfirst($room->status) }}
                                             </span>
                                         </div>
