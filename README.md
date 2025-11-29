@@ -50,13 +50,20 @@
         ```
     - Create a new database named `evotes` in phpMyAdmin (or your preferred database management tool).
 
-6. **Generate application key and run migrations**
+6. **Generate application key, run migrations, and Seed the database**
     ```bash
     php artisan key:generate
     php artisan migrate
+    php artisan db:seed
     ```
 
-7. **Run the application**
+7. **Create storage symlink**
+    ```bash
+    php artisan storage:link
+    ```
+    This command creates a symbolic link from `public/storage` to `storage/app/public`, allowing images to be publicly accessible.
+    
+8. **Run the application**
     Open two terminal windows and run the following commands:
     ```bash
     # Terminal 1
