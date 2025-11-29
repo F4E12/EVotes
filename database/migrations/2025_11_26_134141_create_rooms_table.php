@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
+            $table->string('room_id')->unique();
 
             // hostID: Foreign Key to User
             $table->foreignId('host_id')->constrained('users')->onDelete('cascade');
@@ -22,14 +23,12 @@ return new class extends Migration {
             // uniqueToken: Should be unique
             $table->string('unique_token')->unique();
 
+            // isRevealed: Boolean to indicate if results are revealed
+            $table->boolean('is_revealed')->default(false);
+
             // Date fields
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-
-            // Boolean fields
-            $table->boolean('is_revealed')->default(false);
-            $table->boolean('is_closed')->default(false);
-
             $table->timestamps();
         });
     }

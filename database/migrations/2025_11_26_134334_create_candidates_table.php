@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
+            $table->string('candidate_id')->unique();
 
             // roomID: Foreign Key to Room
             $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
@@ -20,6 +21,7 @@ return new class extends Migration {
             $table->string('photo_url')->nullable();
             $table->text('vision');
             $table->text('mission');
+
 
             $table->timestamps();
         });
