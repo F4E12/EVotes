@@ -3,63 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vote;
+use App\Models\Room;
+use App\Models\Candidate;
 use Illuminate\Http\Request;
 
 class VoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function showRealCount($room_id)
     {
-        //
-    }
+            $room = Room::where('room_id', $room_id)->firstOrFail();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    $adminRevealed = $room->is_revealed;
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    $timeIsUp = $room->end_date && now()->greaterThan($room->end_date);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Vote $vote)
-    {
-        //
-    }
+    $candidates = Candidate::where('room_id', $room->id)
+        ->withCount('votes')
+        ->orderByDesc('votes_count')
+        ->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Vote $vote)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Vote $vote)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Vote $vote)
-    {
-        //
+    $showResults = $room->is_revealed || (now() > $room->end_date);
+    return view('pages.room.result', compact('room', 'candidates', 'showResults'));
     }
 }
