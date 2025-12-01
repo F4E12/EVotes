@@ -17,13 +17,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [RoomController::class, 'index'])->name('dashboard');
     Route::get('/host-a-room', [RoomController::class, 'create'])->name('host-a-room');
-    Route::get('/join-a-room', function () {
-        return view('pages.join-a-room');
-    })->name('join-a-room');
-    Route::get('/history', function () {
-        return view('pages.history');
-    })->name('history');
 
+    //VOTING ROUTES
+    Route::get('/join-a-room', [VoteController::class, 'showJoinForm'])->name('join-a-room');
+    Route::post('/join-a-room', [VoteController::class, 'processJoin'])->name('join.process');
+    Route::get('/vote/{room_id}', [VoteController::class, 'showVotingBooth'])->name('vote.booth');
+    Route::post('/vote/{room_id}', [VoteController::class, 'storeVote'])->name('vote.store');
+    Route::get('/history', [VoteController::class, 'history'])->name('history');
 
     //ROOM & CANDIDATE MANAGEMENT ROUTES
     Route::post('rooms', action: [RoomController::class, 'store'])->name('rooms.store');
