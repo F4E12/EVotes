@@ -34,9 +34,10 @@
 
                         <div class="mb-4">
                             <x-input-label for="content" :value="__('Content')" />
-                            <textarea name="content" id="content" rows="6" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full mt-1" required>{{ old('content', $article->content) }}</textarea>
+                            <textarea name="content" id="content" rows="10" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full mt-1">{{ old('content', $article->content) }}</textarea>
                             <x-input-error :messages="$errors->get('content')" class="mt-2" />
                         </div>
+                        
 
                         <div class="mb-6">
                             <x-input-label for="thumbnail" :value="__('Thumbnail Image')" />
@@ -65,4 +66,21 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#content'), {
+            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+<style>
+    .ck-editor__editable_inline {
+        min-height: 300px;
+    }
+</style>
+@endpush
 </x-app-layout>

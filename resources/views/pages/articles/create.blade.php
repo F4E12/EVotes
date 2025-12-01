@@ -32,7 +32,7 @@
 
                         <div class="mb-4">
                             <x-input-label for="content" :value="__('Content')" />
-                            <textarea name="content" id="content" rows="6" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full mt-1" required>{{ old('content') }}</textarea>
+                            <textarea name="content" id="content" rows="10">{{ old('content') }}</textarea>
                             <x-input-error :messages="$errors->get('content')" class="mt-2" />
                         </div>
 
@@ -54,4 +54,40 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        ClassicEditor
+            .create(document.querySelector('#content'), {
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo'],
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                    ]
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
+</script>
+<style>
+    /* Set a minimum height for the editor so it doesn't look too small */
+    .ck-editor__editable_inline {
+        min-height: 300px;
+    }
+    /* Fix for Tailwind CSS resetting list styles */
+    .ck-content ul {
+        list-style-type: disc;
+        padding-left: 20px;
+    }
+    .ck-content ol {
+        list-style-type: decimal;
+        padding-left: 20px;
+    }
+</style>
+@endpush
 </x-app-layout>

@@ -45,7 +45,18 @@
                                         @endif
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap font-medium">{{ $article->title }}</p>
+                                        <div class="flex items-center gap-3">
+                                            <a href="{{ route('articles.show', $article->id) }}" class="text-gray-600 hover:text-gray-900 font-medium">View</a>
+                                            
+                                            @if(auth()->id() === $article->author_id)
+                                                <a href="{{ route('articles.edit', $article->id) }}" class="text-blue-600 hover:text-blue-900 font-medium">Edit</a>
+                                                <form action="{{ route('articles.destroy', $article->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900 font-medium">Delete</button>
+                                                </form>
+                                            @endif
+                                        </div>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         @if($article->room)

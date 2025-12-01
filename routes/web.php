@@ -43,8 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('candidates/{candidate_id}', [CandidateController::class, 'destroy'])->name('candidates.destroy');
 
     Route::get('rooms/{room_id}/results', [VoteController::class, 'showRealCount'])->name('rooms.results');
-
-
+    
     Route::resource('articles', ArticleController::class);
 });
 

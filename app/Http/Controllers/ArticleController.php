@@ -62,7 +62,8 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
+        $article->load('author', 'room');
+        return view('pages.articles.show', compact('article'));
     }
 
     /**
