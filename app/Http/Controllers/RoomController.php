@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Room;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -217,7 +218,7 @@ class RoomController extends Controller
             return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
         }
 
-        $room->update(['is_revealed' => !$room->is_revealed]);
+        $room->update(['is_revealed' => !$room->is_revealed ? DB::raw('True') : DB::raw('False')]);
 
         return redirect()->route('rooms.show', $room->room_id);
     }
