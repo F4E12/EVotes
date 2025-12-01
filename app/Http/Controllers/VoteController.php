@@ -38,13 +38,16 @@ class VoteController extends Controller
     {
         $room = Room::where('room_id', $room_id)->firstOrFail();
 
+        if (now() > $room->end_date) {
+            return redirect()->route('rooms.results', $room->room_id)->with('error', 'The voting period has ended.');
+        }
+
         $hasVoted = Vote::where('voter_id', Auth::id())
                         ->where('room_id', $room->id)
                         ->exists();
 
         if ($hasVoted) {
-            return redirect()->route('rooms.results', $room->room_id)
-                             ->with('error', 'You have already voted in this room.');
+            return redirect()->route('rooms.results', $room->room_id)->with('error', 'You have already voted in this room.');
         }
 
         $candidates = Candidate::where('room_id', $room->id)->get();
@@ -55,6 +58,10 @@ class VoteController extends Controller
     public function storeVote(Request $request, $room_id)
     {
         $room = Room::where('room_id', $room_id)->firstOrFail();
+
+        if (now() > $room->end_date) {
+            return back()->with('error', 'Voting period has ended! Your vote was not saved.');
+        }
 
         $request->validate([
             'candidate_id' => 'required|exists:candidates,candidate_id',
