@@ -1,222 +1,242 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Room Details') }}
-        </h2>
+        <div class="flex items-center justify-between">
+            <h2 class="font-bold text-2xl text-gray-800 leading-tight">
+                {{ $room->title }}
+            </h2>
+            <span class="px-3 py-1 text-sm font-semibold rounded-full 
+                {{ $status === 'ongoing' ? 'bg-green-100 text-green-800' : ($status === 'upcoming' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
+                Status: {{ ucfirst($status) }}
+            </span>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if (session('error'))
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                    <strong class="font-bold">Error!</strong>
-                    <span class="block sm:inline">{{ session('error') }}</span>
+    <div class="py-8 bg-gray-50 min-h-screen">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+
+            <!-- === TOP ROW: TOKEN & INFO === -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- 1. The Token Ticket (Hero) -->
+                <div class="md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col justify-center items-center text-center">
+                    <h3 class="text-gray-500 font-medium text-sm uppercase tracking-wider mb-4">Participant Access Token</h3>
+                    
+                    <div class="flex items-center gap-4 w-full max-w-lg">
+                        <!-- Code Box -->
+                        <div class="flex-1 bg-gray-100 border-2 border-gray-300 border-dashed rounded-lg py-4 px-6">
+                            <span class="text-5xl font-black font-mono text-gray-800 tracking-widest select-all">
+                                {{ $room->unique_token }}
+                            </span>
+                        </div>
+                        <!-- Copy Button -->
+                        <button onclick="copyToken('{{ $room->unique_token }}')" 
+                                class="h-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg transition shadow-md active:scale-95 flex flex-col items-center justify-center min-h-[5rem]">
+                            <span class="uppercase tracking-wide text-sm">Copy</span>
+                        </button>
+                    </div>
+                    
+                    <p class="mt-4 text-gray-500 text-sm">
+                        Share this code or direct link: <span class="font-mono text-blue-600 bg-blue-50 px-1 rounded">{{ url('/join') }}</span>
+                    </p>
+                    <p id="copy-feedback" class="text-green-600 text-sm font-bold mt-2 opacity-0 transition-opacity">
+                        Copied to clipboard!
+                    </p>
                 </div>
-            @endif
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-2xl font-bold">{{ $room->title }}</h3>
-                    <p class="mt-2">{{ $room->description }}</p>
-                    <div class="mt-4">
-                        <p><strong>Start Date:</strong> {{ $room->start_date->format('d M Y H:i') }}</p>
-                        <p><strong>End Date:</strong> {{ $room->end_date->format('d M Y H:i') }}</p>
 
-
-
-                        <p class="mt-6"><strong>Status:</strong>
-                            @php
-                                $statusColor = '';
-                                switch ($status) {
-                                    case 'upcoming':
-                                        $statusColor = 'bg-yellow-200 text-yellow-800';
-                                        break;
-                                    case 'ongoing':
-                                        $statusColor = 'bg-green-200 text-green-800';
-                                        break;
-                                    case 'ended':
-                                        $statusColor = 'bg-red-200 text-red-800';
-                                        break;
-                                    default:
-                                        $statusColor = 'bg-gray-200 text-gray-800';
-                                        break;
-                                }
-                            @endphp
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium {{ $statusColor }}">
-                                {{ ucfirst($status) }}
-                            </span>
-                        </p>
-
-                        <p class="mt-2"><strong>Votes Revealed:</strong>
-                            @php
-                                $revealedColorClass = $room->is_revealed ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800';
-                            @endphp
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium {{ $revealedColorClass }}">
-                                {{ $room->is_revealed ? 'Yes' : 'No' }}
-                            </span>
-                        </p>
-                        <p class="mt-2"><strong>Total Votes:</strong> <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-200 text-blue-800">{{ $totalVotes }}</span>
-                        </p>
-                        <p class="mt-2"><strong>Room Token:</strong>
-                            <span
-                                class="font-mono bg-gray-200 text-gray-800 px-2 py-1 rounded">{{ $room->unique_token }}</span>
-                        </p>
+                <!-- 2. Room Details & Stats -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+                    <h3 class="font-bold text-gray-900 border-b border-gray-100 pb-2">Room Summary</h3>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Total Votes</span>
+                        <span class="text-2xl font-bold text-blue-600">{{ $totalVotes }}</span>
                     </div>
 
-                    <div class="mt-6 flex items-center space-x-4">
-                        <a href="{{ route('rooms.edit', $room->room_id) }}"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Edit Room
-                        </a>
-                        @if ($status !== 'ended')
-                            <form action="{{ route('rooms.close', $room->room_id) }}" method="POST"
-                                onsubmit="return confirm('Are you sure you want to close voting for this room?');">
-                                @csrf
-                                <button type="submit"
-                                    class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
-                                    Close Voting
-                                </button>
-                            </form>
-                        @endif
-                        <form action="{{ route('rooms.destroy', $room->room_id) }}" method="POST"
-                            onsubmit="return confirm('Are you sure you want to delete this room? This action cannot be undone.');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                Delete Room
-                            </button>
-                        </form>
+                    <div class="space-y-1">
+                        <p class="text-xs text-gray-500 uppercase font-semibold">Start Date</p>
+                        <p class="text-gray-800 font-medium">{{ $room->start_date->format('d M Y, H:i') }}</p>
+                    </div>
 
-                        <form action="{{ route('rooms.toggle-reveal', $room->room_id) }}" method="POST"
-                            onsubmit="return confirm('Are you sure you want to {{ $room->is_revealed ? 'hide' : 'reveal' }} the results? This action will be visible to all participants.');">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit"
-                                class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
-                                {{ $room->is_revealed ? 'Hide Results' : 'Reveal Results' }}
-                            </button>
-                        </form>
+                    <div class="space-y-1">
+                        <p class="text-xs text-gray-500 uppercase font-semibold">End Date</p>
+                        <p class="text-gray-800 font-medium">{{ $room->end_date->format('d M Y, H:i') }}</p>
+                    </div>
+
+                    <div class="space-y-1">
+                        <p class="text-xs text-gray-500 uppercase font-semibold">Visibility</p>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium {{ $room->is_revealed ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800' }}">
+                            {{ $room->is_revealed ? 'Results Public' : 'Results Hidden' }}
+                        </span>
                     </div>
                 </div>
             </div>
 
-            @if ($room->is_revealed)
-                <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        <h3 class="text-2xl font-bold">Results</h3>
-                        <div class="mt-4">
-                            @if ($candidates->isEmpty())
-                                <p>No candidates available yet.</p>
-                            @else
-                                @foreach ($candidates as $candidate)
-                                    <div class="flex items-center justify-between mt-2 p-2 border-b">
-                                        <div class="flex items-center">
+            <!-- === MIDDLE ROW: CONTROLS === -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex flex-wrap gap-3 items-center justify-between">
+                <div class="flex gap-3">
+                    <!-- Edit -->
+                    <a href="{{ route('rooms.edit', $room->room_id) }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition">
+                        Edit Settings
+                    </a>
+
+                    <!-- Toggle Reveal-->
+                    <form action="{{ route('rooms.toggle-reveal', $room->room_id) }}" method="POST">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-offset-2 transition !bg-purple-600 !text-white hover:!bg-purple-600 focus:ring-purple-500">
+                            {{ $room->is_revealed ? 'Hide Results' : 'Reveal Results' }}
+                        </button>
+
+                    </form>
+                </div>
+
+                <div class="flex gap-3">
+                    @if ($status !== 'ended')
+                        <form action="{{ route('rooms.close', $room->room_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to close voting?');">
+                            @csrf
+                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-yellow-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-600 focus:bg-yellow-600 active:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition">
+                                Close Voting
+                            </button>
+                        </form>
+                    @endif
+
+                    <form action="{{ route('rooms.destroy', $room->room_id) }}" method="POST" onsubmit="return confirm('PERMANENTLY DELETE ROOM?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- === BOTTOM ROW: CANDIDATES === -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                
+                <!-- Candidate List (Left 2/3) -->
+                <div class="xl:col-span-2 flex flex-col gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 px-6 py-4 flex justify-between items-center">
+                        <h3 class="font-bold text-gray-800 text-lg">Candidates List</h3>
+                        <span class="text-xs font-semibold bg-gray-200 text-gray-700 px-2 py-1 rounded-full">{{ $candidates->count() }} Candidates</span>
+                    </div>
+
+                    @if ($candidates->isEmpty())
+                        <div class="bg-white rounded-xl border-2 border-dashed border-gray-300 p-12 text-center">
+                            <div class="mx-auto h-16 w-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900">No candidates yet</h3>
+                            <p class="mt-1 text-gray-500">Add the first candidate using the form on the right.</p>
+                        </div>
+                    @else
+                        <!-- Grid Layout for Desktop (Horizontal Cards) -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            @foreach ($candidates as $candidate)
+                                <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                                    <div class="flex items-start gap-6">
+                                        
+                                        <!-- Avatar -->
+                                        <div class="flex-shrink-0">
                                             @if ($candidate->photo_url)
-                                                @if (filter_var($candidate->photo_url, FILTER_VALIDATE_URL))
-                                                    <img src="{{ $candidate->photo_url }}" alt="{{ $candidate->name }}"
-                                                        class="w-12 h-12 object-cover rounded-full">
-                                                @else
-                                                    <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}"
-                                                        class="w-12 h-12 object-cover rounded-full">
-                                                @endif
+                                                <img class="h-16 w-16 rounded-full object-cover border-2 border-gray-200" 
+                                                     src="{{ filter_var($candidate->photo_url, FILTER_VALIDATE_URL) ? $candidate->photo_url : asset('storage/' . $candidate->photo_url) }}" 
+                                                     alt="{{ $candidate->name }}">
                                             @else
-                                                <div
-                                                    class="w-12 h-12 flex items-center justify-center bg-gray-300 rounded-full text-gray-600 font-bold">
-                                                    <i class="fas fa-user text-xl"></i>
+                                                <div class="h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 font-bold text-xl border-2 border-gray-300">
+                                                    {{ substr($candidate->name, 0, 1) }}
                                                 </div>
                                             @endif
-                                            <div class="ml-4">
-                                                <p class="font-semibold">{{ $candidate->name }}</p>
+                                        </div>
+
+                                        <!-- Info -->
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex justify-between items-start mb-2">
+                                                <h4 class="text-lg font-bold text-gray-900 truncate">{{ $candidate->name }}</h4>
+                                                <!-- Vote Count -->
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
+                                                    {{ $candidate->vote_count }} Votes
+                                                </span>
+                                            </div>
+                                            
+                                            <!-- Vision -->
+                                            <div class="mb-2">
+                                                <p class="text-xs text-gray-400 uppercase font-bold mb-1">Vision</p>
+                                                <p class="text-sm text-gray-700 line-clamp-2">{{ $candidate->vision }}</p>
+                                            </div>
+
+                                            <!-- Mission -->
+                                            <div class="mb-3">
+                                                <p class="text-xs text-gray-400 uppercase font-bold mb-1">Mission</p>
+                                                <p class="text-sm text-gray-700 line-clamp-2">{{ $candidate->mission }}</p>
+                                            </div>
+                                            
+                                            <!-- CHANGED: Ensures buttons are perfectly aligned horizontally -->
+                                            <div class="flex space-x-4 pt-2 border-t border-gray-50 items-center">
+                                                <a href="{{ route('candidates.edit', $candidate->candidate_id) }}" class="text-xs font-bold text-blue-600 hover:text-blue-500 uppercase">Edit</a>
+                                                <form action="{{ route('candidates.destroy', $candidate->candidate_id) }}" method="POST" onsubmit="return confirm('Remove candidate?');" class="inline flex items-center">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-xs font-bold text-red-600 hover:text-red-500 uppercase">Remove</button>
+                                                </form>
                                             </div>
                                         </div>
-                                        <div class="text-lg font-bold">
-                                            {{ $candidate->vote_count }} Votes
-                                        </div>
                                     </div>
-                                @endforeach
-                            @endif
+                                </div>
+                            @endforeach
                         </div>
-                    </div>
+                    @endif
                 </div>
-            @endif
 
-            <div class="mt-8 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-2xl font-bold">Candidates</h3>
-                    <div class="mt-4">
-                        @foreach ($candidates as $candidate)
-                            <div class="flex items-center justify-between mt-2 p-2 border-b">
-                                <div class="flex items-center">
-                                    @if ($candidate->photo_url)
-                                        @if (filter_var($candidate->photo_url, FILTER_VALIDATE_URL))
-                                            <img src="{{ $candidate->photo_url }}" alt="{{ $candidate->name }}"
-                                                class="w-16 h-16 object-cover rounded-full">
-                                        @else
-                                            <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}"
-                                                class="w-16 h-16 object-cover rounded-full">
-                                        @endif
-                                    @else
-                                        <div
-                                            class="w-16 h-16 flex items-center justify-center bg-gray-300 rounded-full text-gray-600 font-bold">
-                                            <i class="fas fa-user text-2xl"></i>
-                                        </div>
-                                    @endif
-                                    <div class="ml-4">
-                                        <p class="font-semibold">{{ $candidate->name }}</p>
-                                        <p class="text-sm text-gray-600"><strong>Vision:</strong> {{ $candidate->vision }}
-                                        </p>
-                                        <p class="text-sm text-gray-600"><strong>Mission:</strong> {{ $candidate->mission }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <a href="{{ route('candidates.edit', $candidate->candidate_id) }}"
-                                        class="text-blue-500 hover:text-blue-700">Edit</a>
-                                    <form action="{{ route('candidates.destroy', $candidate->candidate_id) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this candidate?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
-                                    </form>
-                                </div>
-                            </div>
-                        @endforeach
+                <!-- Add Candidate Form (Right 1/3) -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 h-fit sticky top-6">
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                        <h3 class="font-bold text-gray-800">Add New Candidate</h3>
                     </div>
-
-                    <div class="mt-6">
-                        <h4 class="text-xl font-bold">Add New Candidate</h4>
-                        <form action="{{ route('rooms.candidates.store', $room->room_id) }}" method="POST"
-                            enctype="multipart/form-data" class="mt-4">
+                    <div class="p-6">
+                        <!-- CHANGED: Increased spacing between form elements -->
+                        <form action="{{ route('rooms.candidates.store', $room->room_id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                             @csrf
+                            
                             <div>
-                                <label for="name" class="block font-medium text-sm text-gray-700">Name</label>
-                                <input id="name" name="name" type="text" class="mt-1 block w-full" required>
+                                <label class="block font-medium text-sm text-gray-700">Full Name</label>
+                                <input type="text" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                             </div>
-                            <div class="mt-4">
-                                <label for="vision" class="block font-medium text-sm text-gray-700">Vision</label>
-                                <textarea id="vision" name="vision" class="mt-1 block w-full" required></textarea>
+
+                            <div>
+                                <label class="block font-medium text-sm text-gray-700">Vision (Short)</label>
+                                <textarea name="vision" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required></textarea>
                             </div>
-                            <div class="mt-4">
-                                <label for="mission" class="block font-medium text-sm text-gray-700">Mission</label>
-                                <textarea id="mission" name="mission" class="mt-1 block w-full" required></textarea>
+
+                            <div>
+                                <label class="block font-medium text-sm text-gray-700">Mission (Detailed)</label>
+                                <textarea name="mission" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required></textarea>
                             </div>
-                            <div class="mt-4">
-                                <label for="photo_url" class="block font-medium text-sm text-gray-700">Photo</label>
-                                <input id="photo_url" name="photo_url" type="file" class="mt-1 block w-full">
+
+                            <div>
+                                <label class="block font-medium text-sm text-gray-700">Photo</label>
+                                <input type="file" name="photo_url" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                             </div>
-                            <div class="mt-4">
-                                <button type="submit"
-                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                                    Add Candidate
-                                </button>
-                            </div>
+
+                            <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                Add Candidate
+                            </button>
                         </form>
                     </div>
                 </div>
+
             </div>
+
         </div>
     </div>
+
+    <!-- Simple Copy Script -->
+    <script>
+        function copyToken(token) {
+            navigator.clipboard.writeText(token).then(() => {
+                const msg = document.getElementById('copy-feedback');
+                msg.classList.remove('opacity-0');
+                setTimeout(() => msg.classList.add('opacity-0'), 2000);
+            });
+        }
+    </script>
 </x-app-layout>
