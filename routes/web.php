@@ -5,6 +5,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AIController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,8 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('candidates/{candidate_id}', [CandidateController::class, 'destroy'])->name('candidates.destroy');
 
     Route::get('rooms/{room_id}/results', [VoteController::class, 'showRealCount'])->name('rooms.results');
-    
+
     Route::resource('articles', ArticleController::class);
+    Route::post('/ai/enhance', [AIController::class, 'enhanceText'])->name('ai.enhance');
 });
 
 require __DIR__ . '/auth.php';
