@@ -63,51 +63,55 @@
                     <!-- RIGHT COLUMN: SETTINGS & MEDIA (1/3) -->
                     <div class="lg:col-span-1 space-y-8">
                         
-                        <!-- Card: Cover Image (Media) -->
-                        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-200 overflow-hidden sticky top-6">
-                            <div class="px-6 sm:px-8 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
-                                <div class="p-2 bg-white rounded-lg border border-gray-200 text-purple-600 shadow-sm">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <!-- Card: Cover Image (Media) - fixed sticky behavior -->
+                        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-200 lg:static">
+                            <div class="overflow-hidden rounded-[2rem]"> <!-- inner wrapper keeps visuals/clipping -->
+                                <div class="px-6 sm:px-8 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
+                                    <div class="p-2 bg-white rounded-lg border border-gray-200 text-purple-600 shadow-sm">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    </div>
+                                    <h3 class="font-bold text-lg text-gray-900">Cover Image</h3>
                                 </div>
-                                <h3 class="font-bold text-lg text-gray-900">Cover Image</h3>
-                            </div>
-                            
-                            <div class="px-6 sm:px-8 py-6">
 
-                                <div class="w-full">
-                                    <label for="thumbnail" class="relative flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-2xl cursor-pointer bg-gray-50 hover:bg-purple-50/50 hover:border-purple-400 transition-all group overflow-hidden" id="dropzone">
-                                        
-                                        <!-- Default State (Upload Prompt) -->
-                                        <div class="flex flex-col items-center justify-center pt-5 pb-6" id="upload-prompt">
-                                            <div class="p-3 bg-white rounded-full shadow-md mb-3 group-hover:scale-110 transition-transform">
-                                                <svg class="w-8 h-8 text-gray-400 group-hover:text-purple-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                <!-- NOTE: this wrapper limits the card's height so it won't overlay page content.
+                                        It becomes an internal scroll area when it would otherwise overflow the viewport. -->
+                                <div class="px-6 sm:px-8 py-6 max-h-[calc(100vh-6rem)] overflow-auto">
+                                    <div class="w-full">
+                                        <label for="thumbnail" class="relative flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-2xl cursor-pointer bg-gray-50 hover:bg-purple-50/50 hover:border-purple-400 transition-all group overflow-hidden" id="dropzone">
+                                            
+                                            <!-- Default State (Upload Prompt) -->
+                                            <div class="flex flex-col items-center justify-center pt-5 pb-6" id="upload-prompt">
+                                                <div class="p-3 bg-white rounded-full shadow-md mb-3 group-hover:scale-110 transition-transform">
+                                                    <svg class="w-8 h-8 text-gray-400 group-hover:text-purple-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                                </div>
+                                                <p class="mb-1 text-sm text-gray-500 font-medium group-hover:text-purple-700">Click to upload</p>
+                                                <p class="text-xs text-gray-400">PNG, JPG (Max 2MB)</p>
                                             </div>
-                                            <p class="mb-1 text-sm text-gray-500 font-medium group-hover:text-purple-700">Click to upload</p>
-                                            <p class="text-xs text-gray-400">PNG, JPG (Max 2MB)</p>
-                                        </div>
 
-                                        <!-- Preview State (Hidden by default) -->
-                                        <img id="image-preview"
-                                            class="absolute inset-0 w-full h-full object-cover hidden pointer-events-none z-10"
-                                            src="#"
-                                            alt="Preview">
+                                            <!-- Preview State (Hidden by default) -->
+                                            <img id="image-preview"
+                                                class="absolute inset-0 w-full h-full object-cover hidden pointer-events-none z-10"
+                                                src="#"
+                                                alt="Preview">
 
-                                        <!-- Remove Button (Hidden by default) -->
-                                        <button type="button" id="remove-image" class="absolute top-3 right-3 bg-white text-red-500 p-1.5 rounded-full shadow-xl hover:bg-red-50 hidden z-10 ring-2 ring-white">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                                        </button>
+                                            <!-- Remove Button (Hidden by default) -->
+                                            <button type="button" id="remove-image" class="absolute top-3 right-3 bg-white text-red-500 p-1.5 rounded-full shadow-xl hover:bg-red-50 hidden z-30 ring-2 ring-white">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                            </button>
 
-                                        <input id="thumbnail" name="thumbnail" type="file"
-                                            class="absolute inset-0 opacity-0 cursor-pointer z-20"
-                                            accept="image/*">
+                                            <input id="thumbnail" name="thumbnail" type="file"
+                                                class="absolute inset-0 opacity-0 cursor-pointer z-20"
+                                                accept="image/*">
 
-                                    </label>
-                                    @error('thumbnail')
-                                        <p class="text-red-500 text-sm mt-2 font-medium">{{ $message }}</p>
-                                    @enderror
+                                        </label>
+                                        @error('thumbnail')
+                                            <p class="text-red-500 text-sm mt-2 font-medium">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
 
                         <!-- Card: Settings -->
                         <div class="bg-white rounded-[2rem] shadow-sm border border-gray-200 overflow-hidden">
@@ -173,10 +177,18 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. CKEditor Init
+            // 1. CKEditor Init (robust toolbar config)
             ClassicEditor
                 .create(document.querySelector('#content'), {
-                    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo'],
+                    toolbar: {
+                        // Use items array to avoid toolbar disappearing in modern CKEditor5 builds
+                        items: [
+                            'heading', '|',
+                            'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote',
+                            'insertTable', 'imageUpload', 'mediaEmbed',
+                            'undo', 'redo'
+                        ]
+                    },
                     heading: {
                         options: [
                             { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
@@ -185,41 +197,111 @@
                         ]
                     }
                 })
+                .then(editor => {
+                    // expose for debug if needed
+                    window._editor = editor;
+                })
                 .catch(error => {
-                    console.error(error);
+                    // If plugin missing (e.g. imageUpload not present in this build), log and try a fallback toolbar:
+                    console.warn("CKEditor init warning:", error);
+
+                    // Fallback: try to init without optional plugins that might be missing
+                    try {
+                        ClassicEditor
+                            .create(document.querySelector('#content'), {
+                                toolbar: {
+                                    items: [
+                                        'heading', '|',
+                                        'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote',
+                                        'undo', 'redo'
+                                    ]
+                                },
+                                heading: {
+                                    options: [
+                                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                                        { model: 'heading1', view: 'h2', title: 'Heading 1', class: 'ck-heading_heading1' },
+                                        { model: 'heading2', view: 'h3', title: 'Heading 2', class: 'ck-heading_heading2' }
+                                    ]
+                                }
+                            })
+                            .then(editor => { window._editor = editor; })
+                            .catch(err => console.error("CKEditor fallback init failed:", err));
+                    } catch (err) {
+                        console.error("CKEditor double-fallback error:", err);
+                    }
                 });
 
             // 2. Image Preview Logic
+            // Replace your existing preview logic with this block
             const fileInput = document.getElementById('thumbnail');
             const uploadPrompt = document.getElementById('upload-prompt');
             const imagePreview = document.getElementById('image-preview');
             const removeBtn = document.getElementById('remove-image');
 
-            // Show Preview
-            fileInput.addEventListener('change', function() {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        imagePreview.src = e.target.result;
-                        imagePreview.classList.remove('hidden');
-                        removeBtn.classList.remove('hidden');
-                        uploadPrompt.classList.add('hidden');
-                    }
-                    reader.readAsDataURL(file);
+            function showPreviewFromFile(file) {
+                // basic mime-type guard
+                if (!file || !file.type.startsWith('image/')) {
+                    console.warn('Selected file is not an image.', file);
+                    return;
                 }
+
+                // createObjectURL is faster and simpler than FileReader
+                const objectUrl = URL.createObjectURL(file);
+
+                // set src, show image and remove button, hide prompt
+                imagePreview.src = objectUrl;
+                imagePreview.alt = file.name || 'Image preview';
+                imagePreview.classList.remove('hidden');
+                // make sure the preview sits above other content
+                imagePreview.style.zIndex = '10';
+
+                removeBtn.classList.remove('hidden');
+                // fully hide the upload prompt (more robust than only toggling tailwind classes)
+                uploadPrompt.style.display = 'none';
+
+                // revoke the blob URL after the image has loaded so we don't leak memory
+                imagePreview.onload = () => {
+                    try { URL.revokeObjectURL(objectUrl); } catch (e) {}
+                    imagePreview.onload = null;
+                };
+            }
+
+            // file selected
+            fileInput.addEventListener('change', function () {
+                const file = this.files && this.files[0];
+                if (!file) {
+                    // nothing selected — keep prompt visible
+                    uploadPrompt.style.display = '';
+                    imagePreview.classList.add('hidden');
+                    removeBtn.classList.add('hidden');
+                    return;
+                }
+
+                showPreviewFromFile(file);
             });
 
-            // Remove Image
-            removeBtn.addEventListener('click', function(e) {
-                e.preventDefault(); // Prevent label click
+            // Remove preview button
+            removeBtn.addEventListener('click', function (e) {
+                e.preventDefault();
                 e.stopPropagation();
-                fileInput.value = ''; // Clear input
+
+                // clear input
+                try {
+                    fileInput.value = '';
+                } catch(_) {
+                    // some older browsers require replacing the input
+                    const newInput = fileInput.cloneNode(true);
+                    fileInput.parentNode.replaceChild(newInput, fileInput);
+                }
+
+                // hide preview & show upload prompt
                 imagePreview.src = '#';
                 imagePreview.classList.add('hidden');
                 removeBtn.classList.add('hidden');
-                uploadPrompt.classList.remove('hidden');
+                uploadPrompt.style.display = '';
+                imagePreview.style.zIndex = ''; // reset
             });
+
         });
     </script>
     <style>
@@ -229,6 +311,13 @@
             padding: 1.5rem !important;
             border-bottom-left-radius: 0.75rem !important;
             border-bottom-right-radius: 0.75rem !important;
+        }
+        /* Ensure the toolbar is visible even when some global CSS tries to hide it */
+        .ck.ck-toolbar {
+            display: flex !important;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
         }
         .ck-toolbar {
             border-top-left-radius: 0.75rem !important;

@@ -1,3 +1,4 @@
+<!-- Paste your full Edit Article page here so I can apply all fixes -->
 <x-app-layout>
     <x-slot name="header">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -64,7 +65,7 @@
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-3">Body Content</label>
 
-                                    <div class="rounded-xl overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all">
+                                    <div class="rounded-xl border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all">
                                         <textarea id="content" name="content" rows="15" class="w-full">{{ old('content', $article->content) }}</textarea>
                                     </div>
 
@@ -81,45 +82,57 @@
                     <div class="lg:col-span-1 space-y-8">
 
                         <!-- COVER IMAGE CARD -->
-                        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-200 overflow-hidden sticky top-6">
+<div class="bg-white rounded-[2rem] shadow-sm border border-gray-200 overflow-hidden ">
 
-                            <div class="px-6 sm:px-8 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
-                                <div class="p-2 bg-white rounded-lg border border-gray-200 text-purple-600 shadow-sm">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                                <h3 class="font-bold text-lg text-gray-900">Cover Image</h3>
-                            </div>
+    <div class="px-6 sm:px-8 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
+        <div class="p-2 bg-white rounded-lg border border-gray-200 text-purple-600 shadow-sm">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+        </div>
+        <h3 class="font-bold text-lg text-gray-900">Cover Image</h3>
+    </div>
 
-                            <div class="px-6 sm:px-8 py-6 space-y-4">
+    <div class="px-6 sm:px-8 py-6 space-y-4">
 
-                                @if($article->thumbnail_url)
-                                    <div>
-                                        <img src="{{ asset('storage/'.$article->thumbnail_url) }}"
-                                            class="w-full h-40 object-cover rounded-xl border border-gray-200 shadow-sm">
-                                    </div>
-                                @endif
+        @if($article->thumbnail_url)
+            <div>
+                <img src="{{ asset('storage/'.$article->thumbnail_url) }}"
+                    class="w-full h-40 object-cover rounded-xl border border-gray-200 shadow-sm">
+            </div>
+        @endif
 
-                                <input 
-                                    type="file"
-                                    name="thumbnail"
-                                    class="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-                                >
+        <!-- FIXED FILE INPUT -->
+        <label class="block text-sm font-bold text-gray-700">Replace Image</label>
+        <input 
+            type="file"
+            accept="image/*"
+            name="thumbnail"
+            class="block w-full text-sm border border-gray-300 rounded-xl p-2 bg-white file:bg-blue-50 file:text-blue-700 file:rounded-xl file:border-0 file:px-4 file:py-2 hover:file:bg-blue-100"
+        >
 
-                                <p class="text-xs text-gray-500">Upload a new image to replace the current one.</p>
+        @error('thumbnail')
+            <p class="text-red-500 text-sm font-medium">{{ $message }}</p>
+        @enderror
 
-                                @error('thumbnail')
-                                    <p class="text-red-500 text-sm font-medium">{{ $message }}</p>
-                                @enderror
+        <!-- CAPTION RICH TEXT -->
+        <div class="pt-4">
+            <label class="block text-sm font-bold text-gray-700 mb-2">Image Caption</label>
+            <div class="rounded-xl overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500">
+                <textarea id="caption" name="caption" rows="4" class="w-full">{{ old('caption', $article->caption) }}</textarea>
+            </div>
+            @error('caption')
+                <p class="text-red-500 text-sm font-medium">{{ $message }}</p>
+            @enderror
+        </div>
 
-                            </div>
-                        </div>
+    </div>
+</div>
 
-                        <div class = "h-8"></div>
+<div class = "h-8"></div>
 
-                        <!-- SETTINGS CARD -->
+<!-- SETTINGS CARD -->
                         <div class="bg-white rounded-[2rem] shadow-sm border border-gray-200 overflow-hidden">
 
                             <div class="px-6 sm:px-8 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
@@ -177,9 +190,15 @@
 
     @push('scripts')
     <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor.create(document.querySelector('#caption'), {
+        toolbar: ['bold','italic','link','bulletedList','numberedList','undo','redo']
+    }).catch(error => console.error(error));
+</script>
     <script>
         ClassicEditor.create(document.querySelector('#content'), {
-            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo']
+            toolbar: ['heading','|','bold','italic','underline','strikethrough','link','bulletedList','numberedList','blockQuote','undo','redo'],
+            height: '400px'
         }).catch(error => console.error(error));
     </script>
     @endpush
