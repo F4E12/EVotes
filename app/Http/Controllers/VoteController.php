@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vote;
 use App\Models\Room;
 use App\Models\Candidate;
+use App\Models\RoomParticipant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,6 +22,7 @@ class VoteController extends Controller
             'token' => 'required|string',
         ]);
 
+
         $room = Room::where('unique_token', $request->token)->first();
 
         if (!$room) {
@@ -30,6 +32,12 @@ class VoteController extends Controller
         if (now() > $room->end_date) {
             return back()->with('error', 'Voting session for this room has ended.');
         }
+
+        // Record the user as a room participant
+        RoomParticipant::firstOrCreate([
+            'user_id' => Auth::id(),
+            'room_id' => $room->id,
+        ]);
 
         return redirect()->route('vote.booth', $room->room_id);
     }
@@ -43,8 +51,8 @@ class VoteController extends Controller
         }
 
         $hasVoted = Vote::where('voter_id', Auth::id())
-                        ->where('room_id', $room->id)
-                        ->exists();
+            ->where('room_id', $room->id)
+            ->exists();
 
         if ($hasVoted) {
             return redirect()->route('rooms.results', $room->room_id)->with('error', 'You have already voted in this room.');
@@ -70,8 +78,8 @@ class VoteController extends Controller
         $candidate = Candidate::where('candidate_id', $request->candidate_id)->firstOrFail();
 
         $existingVote = Vote::where('voter_id', Auth::id())
-                            ->where('room_id', $room->id)
-                            ->first();
+            ->where('room_id', $room->id)
+            ->first();
 
         if ($existingVote) {
             return back()->with('error', 'You have already voted!');
@@ -90,9 +98,9 @@ class VoteController extends Controller
     public function history()
     {
         $votes = Vote::with(['room', 'candidate'])
-                     ->where('voter_id', Auth::id())
-                     ->latest()
-                     ->get();
+            ->where('voter_id', Auth::id())
+            ->latest()
+            ->get();
 
         return view('pages.history', compact('votes'));
     }

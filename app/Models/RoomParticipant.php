@@ -14,8 +14,6 @@ class RoomParticipant extends Model
     protected $fillable = [
         'user_id',
         'room_id',
-        'role',
-        'is_banned',
     ];
 
     /**

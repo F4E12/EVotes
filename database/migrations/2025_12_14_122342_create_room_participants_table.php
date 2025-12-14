@@ -22,12 +22,6 @@ return new class extends Migration {
                 ->constrained('rooms')
                 ->onDelete('cascade'); // If room is deleted, remove all participants
 
-            // Optional: Role management (e.g., 'member', 'admin')
-            $table->string('role')->default('member');
-
-            // Optional: Banning mechanism
-            $table->boolean('is_banned')->default(false);
-
             // Standard timestamps (created_at = joined_at)
             $table->timestamps();
 
