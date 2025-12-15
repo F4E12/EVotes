@@ -33,7 +33,7 @@
                         </svg>
                         EVotes
                     </a>
-                    
+
                     <!-- Desktop Links (These are for logged-in users, but can be seen by guests) -->
                     <div class="hidden sm:flex space-x-1">
                         <!-- Dashboard -->
@@ -65,50 +65,53 @@
                 <!-- Right Side: User Dropdown / Auth Links -->
                 <div class="hidden sm:flex items-center sm:ml-6">
                     @auth
-                    <!-- LOGGED IN USER SECTION -->
-                    <div class="relative ml-3" x-data="{ open: false }">
-                        <div>
-                            <button @click="open = ! open" type="button" class="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
-                                <!-- FIX 1 APPLIED: Safe check for name -->
-                                <div>{{ Auth::user()->name ?? 'Profile' }}</div>
-                                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <!-- Dropdown Menu -->
-                        <div x-show="open" @click.away="open = false"
-                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none"
-                            style="display: none;">
-
-                            <a href="{{ route('profile.edit') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                Your Profile
-                            </a>
-
-                            <!-- Logout -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit"
-                                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                                    Log Out
+                        <!-- LOGGED IN USER SECTION -->
+                        <div class="relative ml-3" x-data="{ open: false }">
+                            <div>
+                                <button @click="open = ! open" type="button"
+                                    class="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
+                                    <!-- FIX 1 APPLIED: Safe check for name -->
+                                    <div>{{ Auth::user()->name ?? 'Profile' }}</div>
+                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
                                 </button>
-                            </form>
+                            </div>
+
+                            <!-- Dropdown Menu -->
+                            <div x-show="open" @click.away="open = false"
+                                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                style="display: none;">
+
+                                <a href="{{ route('profile.edit') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    Your Profile
+                                </a>
+
+                                <!-- Logout -->
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit"
+                                        class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                        Log Out
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
                     @else
-                    <!-- GUEST SECTION (Visible when not authenticated) -->
-                    <div class="flex items-center space-x-3">
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
-                            Log In
-                        </a>
-                        <a href="{{ route('register') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 transition shadow-sm">
-                            Register
-                        </a>
-                    </div>
+                        <!-- GUEST SECTION (Visible when not authenticated) -->
+                        <div class="flex items-center space-x-3">
+                            <a href="{{ route('login') }}"
+                                class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
+                                Log In
+                            </a>
+                            <a href="{{ route('register') }}"
+                                class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 transition shadow-sm">
+                                Register
+                            </a>
+                        </div>
                     @endauth
                 </div>
 
@@ -144,28 +147,32 @@
             </div>
             <div class="pt-4 pb-1 border-t border-gray-200">
                 @auth
-                <div class="px-4">
-                    <!-- FIX 2 APPLIED: Safe check for name and email -->
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name ?? 'User Profile' }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email ?? 'user@example.com' }}</div>
-                </div>
-                <div class="mt-3 space-y-1">
-                    <a href="{{ route('profile.edit') }}"
-                        class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50">Your
-                        Profile</a>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit"
-                            class="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-red-600 hover:text-red-800 hover:bg-gray-50">Log
-                            Out</button>
-                    </form>
-                </div>
+                    <div class="px-4">
+                        <!-- FIX 2 APPLIED: Safe check for name and email -->
+                        <div class="font-medium text-base text-gray-800">{{ Auth::user()->name ?? 'User Profile' }}</div>
+                        <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email ?? 'user@example.com' }}
+                        </div>
+                    </div>
+                    <div class="mt-3 space-y-1">
+                        <a href="{{ route('profile.edit') }}"
+                            class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50">Your
+                            Profile</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-red-600 hover:text-red-800 hover:bg-gray-50">Log
+                                Out</button>
+                        </form>
+                    </div>
                 @else
-                <!-- Show Login/Register in mobile if not logged in -->
-                <div class="px-4 space-y-2">
-                    <a href="{{ route('login') }}" class="block w-full text-center py-2 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-100">Log In</a>
-                    <a href="{{ route('register') }}" class="block w-full text-center py-2 bg-blue-600 rounded-lg text-sm font-semibold text-white hover:bg-blue-700">Register</a>
-                </div>
+                    <!-- Show Login/Register in mobile if not logged in -->
+                    <div class="px-4 space-y-2">
+                        <a href="{{ route('login') }}"
+                            class="block w-full text-center py-2 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-100">Log
+                            In</a>
+                        <a href="{{ route('register') }}"
+                            class="block w-full text-center py-2 bg-blue-600 rounded-lg text-sm font-semibold text-white hover:bg-blue-700">Register</a>
+                    </div>
                 @endauth
             </div>
         </div>
@@ -195,7 +202,7 @@
             <p class="text-gray-400 text-sm">&copy; {{ date('Y') }} EVotes. The Secure Voting Platform.</p>
         </div>
     </footer>
-
+    @stack('scripts')
 </body>
 
 </html>
