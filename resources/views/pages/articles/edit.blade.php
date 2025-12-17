@@ -98,7 +98,7 @@
 
         @if($article->thumbnail_url)
             <div>
-                <img src="{{ asset('storage/'.$article->thumbnail_url) }}"
+                <img src="{{ Storage::url($article->thumbnail_url) }}"
                     class="w-full h-40 object-cover rounded-xl border border-gray-200 shadow-sm">
             </div>
         @endif

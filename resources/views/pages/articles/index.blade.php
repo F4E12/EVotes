@@ -48,7 +48,7 @@
                                     <tr>
                                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                             @if($article->thumbnail_url)
-                                                <img src="{{ asset('storage/' . $article->thumbnail_url) }}" alt="Thumb" class="h-10 w-10 rounded object-cover border border-gray-100">
+                                                <img src="{{ Storage::url($article->thumbnail_url) }}" alt="Thumb" class="h-10 w-10 rounded object-cover border border-gray-100">
                                             @else
                                                 <span class="text-gray-400 text-xs">No Image</span>
                                             @endif
@@ -118,7 +118,7 @@
                                 <!-- Thumbnail -->
                                 <a href="{{ route('articles.show', $article->id) }}" class="relative h-48 bg-gray-100 overflow-hidden block group">
                                     @if($article->thumbnail_url)
-                                        <img src="{{ asset('storage/' . $article->thumbnail_url) }}" 
+                                        <img src="{{ Storage::url($article->thumbnail_url) }}" 
                                              alt="{{ $article->title }}" 
                                              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                                     @else

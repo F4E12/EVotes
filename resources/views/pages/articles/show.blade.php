@@ -18,7 +18,7 @@
                 {{-- Cover Image --}}
                 @if($article->thumbnail_url)
                     <div class="relative w-full h-64 md:h-96 bg-gray-100 group">
-                        <img src="{{ asset('storage/' . $article->thumbnail_url) }}" 
+                        <img src="{{ Storage::url($article->thumbnail_url) }}"
                              alt="{{ $article->title }}" 
                              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>

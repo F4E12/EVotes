@@ -40,10 +40,14 @@ class ArticleController extends Controller
             'thumbnail' => 'nullable|image|max:2048',
         ]);
 
-        $path = null;
-        if ($request->hasFile('thumbnail')) {
-            $path = $request->file('thumbnail')->store('thumbnails', 'public');
-        }
+        // $path = null;
+        // if ($request->hasFile('thumbnail')) {
+        //     $path = $request->file('thumbnail')->store('thumbnails', 'public');
+        // }
+        // In store() and update() methods:
+
+
+        $path = $request->file('thumbnail')->store('thumbnails', 's3');
 
         Article::create([
             'author_id' => Auth::id(),
