@@ -38,8 +38,9 @@ class CandidateController extends Controller
     {
         $photoPath = null;
         if ($photoFile) {
-            $photoPath = $photoFile->store('photos', 'public');
+            $photoPath = $photoFile->store('photos', 's3');
         }
+        
 
         $room->candidates()->create([
             'candidate_id' => CandidateController::generateCandidateID(),
@@ -96,9 +97,9 @@ class CandidateController extends Controller
         $photoPath = $candidate->photo_url;
         if ($request->hasFile('photo_url')) {
             if ($photoPath) {
-                Storage::disk('public')->delete($photoPath);
+                Storage::disk('s3')->delete($photoPath);
             }
-            $photoPath = $request->file('photo_url')->store('photos', 'public');
+            $photoPath = $request->file('photo_url')->store('photos', 's3');
         }
 
         $candidate->update([
@@ -128,7 +129,7 @@ class CandidateController extends Controller
         }
 
         if ($candidate->photo_url) {
-            Storage::disk('public')->delete($candidate->photo_url);
+            Storage::disk('s3')->delete($candidate->photo_url);
         }
 
         $candidate->delete();

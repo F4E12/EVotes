@@ -127,7 +127,7 @@
                                         <div class="flex-shrink-0">
                                             @if ($candidate->photo_url)
                                                 <img class="h-16 w-16 rounded-full object-cover border-2 border-gray-200"
-                                                     src="{{ filter_var($candidate->photo_url, FILTER_VALIDATE_URL) ? $candidate->photo_url : asset('storage/' . $candidate->photo_url) }}"
+                                                     src="{{ Storage::url($candidate->photo_url) }}"
                                                      alt="{{ $candidate->name }}">
                                             @else
                                                 <div class="h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 font-bold text-xl border-2 border-gray-300">
