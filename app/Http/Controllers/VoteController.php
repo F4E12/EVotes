@@ -117,4 +117,27 @@ class VoteController extends Controller
 
         return view('pages.room.result', compact('room', 'candidates', 'showResults'));
     }
+
+    public function joinViaDirectLink($share_code)
+    {
+        $room = Room::where('share_code', $share_code)->firstOrFail();
+
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('intended_share_code', $share_code)
+                ->with('info', __('Please login to join the voting room.'));
+        }
+
+        if (now() > $room->end_date) {
+            return redirect()->route('rooms.results', $room->room_id)
+                ->with('error', __('Voting session for this room has ended.'));
+        }
+
+        RoomParticipant::firstOrCreate([
+            'user_id' => Auth::id(),
+            'room_id' => $room->id,
+        ]);
+
+        return redirect()->route('vote.booth', $room->room_id);
+    }
 }

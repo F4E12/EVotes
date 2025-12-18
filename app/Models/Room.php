@@ -18,6 +18,7 @@ class Room extends Model
         'end_date',
         'is_revealed',
         'unique_token',
+        'share_code',
     ];
 
     /**

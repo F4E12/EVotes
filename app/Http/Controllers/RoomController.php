@@ -57,6 +57,7 @@ class RoomController extends Controller
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'unique_token' => $this->generateToken(),
+            'share_code' => $this->generateShareCode(),
         ]);
 
         foreach ($request->candidates as $candidateData) {
@@ -230,6 +231,18 @@ class RoomController extends Controller
         } while (Room::where('unique_token', $token)->exists());
 
         return $token;
+    }
+
+    /**
+     * Generate a unique share code for direct links.
+     */
+    public static function generateShareCode()
+    {
+        do {
+            $code = Str::random(32);
+        } while (Room::where('share_code', $code)->exists());
+
+        return $code;
     }
 
     public function getRoomStatus(Room $room)
