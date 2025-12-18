@@ -23,7 +23,7 @@
             
             @if($user->profile_pic_url)
                 <div class="mt-2 mb-2">
-                    <img src="{{ asset('storage/' . $user->profile_pic_url) }}" alt="Avatar" class="w-20 h-20 rounded-full object-cover border border-gray-300">
+                    <img src="{{ Storage::url($user->profile_pic_url) }}" alt="Avatar" class="w-20 h-20 rounded-full object-cover border border-gray-300">
                 </div>
             @endif
 

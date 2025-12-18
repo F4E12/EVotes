@@ -32,7 +32,8 @@ public function update(ProfileUpdateRequest $request): RedirectResponse
             Storage::disk('public')->delete($user->profile_pic_url);
         }
         
-        $path = $request->file('profile_pic')->store('avatars', 'public');
+        // $path = $request->file('profile_pic')->store('avatars', 'public');
+        $path = $request->file('profile_pic')->store('avatars', 's3');
         $user->profile_pic_url = $path; // Matches your DB column
     }
 

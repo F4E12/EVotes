@@ -1,4 +1,3 @@
-<!-- Paste your full Edit Article page here so I can apply all fixes -->
 <x-app-layout>
     <x-slot name="header">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -10,7 +9,7 @@
                     </svg>
                 </a>
                 <h2 class="font-bold text-2xl text-gray-800 leading-tight">
-                    Edit Article
+                    {{ __('Create New Article') }}
                 </h2>
             </div>
         </div>
@@ -19,19 +18,15 @@
     <div class="py-12 bg-gray-50 min-h-screen pb-32">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <form action="{{ route('articles.update', $article->id) }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+            <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                 @csrf
-                @method('PUT')
 
                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-10 items-start">
 
-                    <!-- LEFT COLUMN (MAIN CONTENT) -->
                     <div class="lg:col-span-3 space-y-8">
 
-                        <!-- Card: Article Content -->
                         <div class="bg-white rounded-[2rem] shadow-sm border border-gray-200 overflow-hidden">
 
-                            <!-- Header -->
                             <div class="px-6 sm:px-8 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
                                 <div class="p-2 bg-white rounded-lg border border-gray-200 text-blue-600 shadow-sm">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,21 +34,19 @@
                                               d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
                                 </div>
-                                <h3 class="font-bold text-lg text-gray-900">Article Content</h3>
+                                <h3 class="font-bold text-lg text-gray-900">{{ __('Article Content') }}</h3>
                             </div>
 
-                            <!-- Body -->
                             <div class="px-6 sm:px-8 py-6 space-y-6">
 
-                                <!-- Title -->
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-3">Headline</label>
-                                    <input 
+                                    <label class="block text-sm font-bold text-gray-700 mb-3">{{ __('Headline') }}</label>
+                                    <input
                                         type="text"
                                         name="title"
-                                        value="{{ old('title', $article->title) }}"
+                                        value="{{ old('title') }}"
                                         class="w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-4 px-5 text-lg font-bold placeholder-gray-300 transition-all"
-                                        placeholder="Enter a catchy title..."
+                                        placeholder="{{ __('Enter a catchy title...') }}"
                                         required
                                     >
                                     @error('title')
@@ -61,12 +54,11 @@
                                     @enderror
                                 </div>
 
-                                <!-- Content -->
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-3">Body Content</label>
+                                    <label class="block text-sm font-bold text-gray-700 mb-3">{{ __('Body Content') }}</label>
 
                                     <div class="rounded-xl border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all">
-                                        <textarea id="content" name="content" rows="15" class="w-full">{{ old('content', $article->content) }}</textarea>
+                                        <textarea id="content" name="content" rows="15" class="w-full">{{ old('content') }}</textarea>
                                     </div>
 
                                     @error('content')
@@ -78,61 +70,49 @@
                         </div>
                     </div>
 
-                    <!-- RIGHT COLUMN (SIDEBAR) -->
                     <div class="lg:col-span-1 space-y-8">
 
-                        <!-- COVER IMAGE CARD -->
-<div class="bg-white rounded-[2rem] shadow-sm border border-gray-200 overflow-hidden ">
+                        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-200 overflow-hidden ">
 
-    <div class="px-6 sm:px-8 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
-        <div class="p-2 bg-white rounded-lg border border-gray-200 text-purple-600 shadow-sm">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-        </div>
-        <h3 class="font-bold text-lg text-gray-900">Cover Image</h3>
-    </div>
+                            <div class="px-6 sm:px-8 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
+                                <div class="p-2 bg-white rounded-lg border border-gray-200 text-purple-600 shadow-sm">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-bold text-lg text-gray-900">{{ __('Cover Image') }}</h3>
+                            </div>
 
-    <div class="px-6 sm:px-8 py-6 space-y-4">
+                            <div class="px-6 sm:px-8 py-6 space-y-4">
 
-        @if($article->thumbnail_url)
-            <div>
-                <img src="{{ asset('storage/'.$article->thumbnail_url) }}"
-                    class="w-full h-40 object-cover rounded-xl border border-gray-200 shadow-sm">
-            </div>
-        @endif
+                                <label class="block text-sm font-bold text-gray-700">{{ __('Upload Image') }}</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    name="thumbnail"
+                                    class="block w-full text-sm border border-gray-300 rounded-xl p-2 bg-white file:bg-blue-50 file:text-blue-700 file:rounded-xl file:border-0 file:px-4 file:py-2 hover:file:bg-blue-100"
+                                >
 
-        <!-- FIXED FILE INPUT -->
-        <label class="block text-sm font-bold text-gray-700">Replace Image</label>
-        <input 
-            type="file"
-            accept="image/*"
-            name="thumbnail"
-            class="block w-full text-sm border border-gray-300 rounded-xl p-2 bg-white file:bg-blue-50 file:text-blue-700 file:rounded-xl file:border-0 file:px-4 file:py-2 hover:file:bg-blue-100"
-        >
+                                @error('thumbnail')
+                                    <p class="text-red-500 text-sm font-medium">{{ $message }}</p>
+                                @enderror
 
-        @error('thumbnail')
-            <p class="text-red-500 text-sm font-medium">{{ $message }}</p>
-        @enderror
+                                <div class="pt-4">
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ __('Image Caption') }}</label>
+                                    <div class="rounded-xl overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500">
+                                        <textarea id="caption" name="caption" rows="4" class="w-full">{{ old('caption') }}</textarea>
+                                    </div>
+                                    @error('caption')
+                                        <p class="text-red-500 text-sm font-medium">{{ $message }}</p>
+                                    @enderror
+                                </div>
 
-        <!-- CAPTION RICH TEXT -->
-        <div class="pt-4">
-            <label class="block text-sm font-bold text-gray-700 mb-2">Image Caption</label>
-            <div class="rounded-xl overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500">
-                <textarea id="caption" name="caption" rows="4" class="w-full">{{ old('caption', $article->caption) }}</textarea>
-            </div>
-            @error('caption')
-                <p class="text-red-500 text-sm font-medium">{{ $message }}</p>
-            @enderror
-        </div>
+                            </div>
+                        </div>
 
-    </div>
-</div>
+                        <div class = "h-8"></div>
 
-<div class = "h-8"></div>
-
-<!-- SETTINGS CARD -->
                         <div class="bg-white rounded-[2rem] shadow-sm border border-gray-200 overflow-hidden">
 
                             <div class="px-6 sm:px-8 py-4 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
@@ -142,19 +122,19 @@
                                               d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                                     </svg>
                                 </div>
-                                <h3 class="font-bold text-lg text-gray-900">Settings</h3>
+                                <h3 class="font-bold text-lg text-gray-900">{{ __('Settings') }}</h3>
                             </div>
 
                             <div class="px-6 sm:px-8 py-6 space-y-4">
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Related Room</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">{{ __('Related Room') }}</label>
 
-                                <select 
+                                <select
                                     name="related_room_id"
                                     class="w-full rounded-xl border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 py-3.5 px-5"
                                 >
-                                    <option value="">-- General News --</option>
+                                    <option value="">-- {{ __('General News') }} --</option>
                                     @foreach($rooms as $room)
-                                        <option value="{{ $room->id }}" {{ $article->related_room_id == $room->id ? 'selected' : '' }}>
+                                        <option value="{{ $room->id }}" {{ old('related_room_id') == $room->id ? 'selected' : '' }}>
                                             {{ $room->title }}
                                         </option>
                                     @endforeach
@@ -167,11 +147,10 @@
 
                 <div class = "h-8"></div>
 
-                <!-- FOOTER BUTTONS -->
                 <div class="flex items-center justify-end gap-4">
                     <a href="{{ route('articles.index') }}"
                        class="inline-flex justify-center items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
-                        Cancel
+                        {{ __('Cancel') }}
                     </a>
 
                     <button type="submit"
@@ -180,7 +159,7 @@
                                    hover:bg-blue-700 active:bg-blue-900
                                    focus:outline-none focus:border-blue-900 focus:ring ring-blue-300
                                    disabled:opacity-25 transition shadow-md gap-2">
-                        Update Article
+                        {{ __('Publish Article') }}
                     </button>
                 </div>
 

@@ -10,27 +10,18 @@ use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $articles = Article::with(['author', 'room'])->latest()->get();
         return view('pages.articles.index', compact('articles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $rooms = Room::all(); 
+        $rooms = Room::all();
         return view('pages.articles.create', compact('rooms'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -40,10 +31,7 @@ class ArticleController extends Controller
             'thumbnail' => 'nullable|image|max:2048',
         ]);
 
-        $path = null;
-        if ($request->hasFile('thumbnail')) {
-            $path = $request->file('thumbnail')->store('thumbnails', 'public');
-        }
+        $path = $request->file('thumbnail')->store('thumbnails', 's3');
 
         Article::create([
             'author_id' => Auth::id(),
@@ -54,21 +42,15 @@ class ArticleController extends Controller
             'published_at' => now(),
         ]);
 
-        return redirect()->route('articles.index')->with('success', 'Artikel berhasil dibuat!');
+        return redirect()->route('articles.index')->with('success', __('Article created successfully!'));
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Article $article)
     {
         $article->load('author', 'room');
         return view('pages.articles.show', compact('article'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Article $article)
     {
         if ($article->author_id !== Auth::id()) abort(403);
@@ -76,9 +58,6 @@ class ArticleController extends Controller
         return view('pages.articles.edit', compact('article', 'rooms'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Article $article)
     {
         if ($article->author_id !== Auth::id()) abort(403);
@@ -103,21 +82,18 @@ class ArticleController extends Controller
             'related_room_id' => $request->related_room_id,
         ]);
 
-        return redirect()->route('articles.index')->with('success', 'Artikel diperbarui!');
+        return redirect()->route('articles.index')->with('success', __('Article updated successfully!'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Article $article)
     {
         if ($article->author_id !== Auth::id()) abort(403);
-        
+
         if ($article->thumbnail_url) {
             Storage::disk('public')->delete($article->thumbnail_url);
         }
-        
+
         $article->delete();
-        return redirect()->route('articles.index')->with('success', 'Artikel dihapus.');
+        return redirect()->route('articles.index')->with('success', __('Article deleted successfully!'));
     }
 }

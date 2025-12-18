@@ -13,7 +13,7 @@
                     <h1 class="text-3xl font-bold mb-2">{{ $room->title }}</h1>
                     <p class="text-gray-600">{{ $room->description }}</p>
                     <div class="mt-4 text-sm text-gray-500">
-                        Please select one candidate carefully. This action cannot be undone.
+                        {{ __('Please select one candidate carefully. This action cannot be undone.') }}
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                                 <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
-                                <span class="mt-2 text-sm">No Photo</span>
+                                <span class="mt-2 text-sm">{{ __('No Photo') }}</span>
                             </div>
                         @endif
                     </div>
@@ -43,10 +43,10 @@
                         <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ $candidate->name }}</h3>
 
                         <div class="mb-4">
-                            <h4 class="font-bold text-sm text-blue-600 mt-4">Vision</h4>
+                            <h4 class="font-bold text-sm text-blue-600 mt-4">{{ __('Vision') }}</h4>
                             <p class="text-gray-700 text-sm mb-2">{{ $candidate->vision }}</p>
 
-                            <h4 class="font-bold text-sm text-blue-600 mt-3">Mission</h4>
+                            <h4 class="font-bold text-sm text-blue-600 mt-3">{{ __('Mission') }}</h4>
                             <p class="text-gray-700 text-sm">{{ $candidate->mission }}</p>
                         </div>
                     </div>
@@ -58,8 +58,8 @@
 
                             <button type="submit"
                                     class="w-full justify-center inline-flex items-center px-4 py-3 bg-blue-500 border border-transparent rounded-md font-bold text-white tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150"
-                                    onclick="return confirm('Are you sure you want to vote for {{ $candidate->name }}? This cannot be changed.')">
-                                Vote for {{ $candidate->name }}
+                                    onclick="return confirm('{{ __('Are you sure you want to vote for :name? This cannot be changed.', ['name' => $candidate->name]) }}')">
+                                {{ __('Vote for :name', ['name' => $candidate->name]) }}
                             </button>
                         </form>
                     </div>

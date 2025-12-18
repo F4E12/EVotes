@@ -10,19 +10,16 @@ use Str;
 
 class CandidateController extends Controller
 {
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request, string $room_id)
     {
         $room = Room::where('room_id', $room_id)->firstOrFail();
 
         if (!$room) {
-            return redirect()->route('dashboard')->with('error', 'Room not found.');
+            return redirect()->route('dashboard')->with('error', __('Room not found.'));
         }
 
         if ($room->host_id !== auth()->id()) {
-            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+            return redirect()->route('dashboard')->with('error', __('You do not have access to this room.'));
         }
 
         $request->validate([
@@ -34,7 +31,7 @@ class CandidateController extends Controller
 
         CandidateController::createCandidate($request, $room, $request->file('photo_url'));
 
-        return redirect()->route('rooms.show', $room->room_id);
+        return redirect()->route('rooms.show', $room->room_id)->with('success', __('Candidate added successfully!'));
     }
 
     public static function createCandidate(Request $request, Room $room, $photoFile = null)
@@ -52,6 +49,7 @@ class CandidateController extends Controller
             'photo_url' => $photoPath,
         ]);
     }
+
     public static function generateCandidateID()
     {
         do {
@@ -60,37 +58,32 @@ class CandidateController extends Controller
 
         return $candidateID;
     }
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $candidate_id)
     {
         $candidate = Candidate::where('candidate_id', $candidate_id)->firstOrFail();
 
         if (!$candidate) {
-            return redirect()->route('dashboard')->with('error', 'Candidate not found.');
+            return redirect()->route('dashboard')->with('error', __('Candidate not found.'));
         }
 
         if ($candidate->room->host_id !== auth()->id()) {
-            return redirect()->route('dashboard')->with('error', 'You do not have access to this candidate.');
+            return redirect()->route('dashboard')->with('error', __('You do not have access to this candidate.'));
         }
 
         return view('pages.candidate.edit', compact('candidate'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $candidate_id)
     {
         $candidate = Candidate::where('candidate_id', $candidate_id)->firstOrFail();
 
         if (!$candidate) {
-            return redirect()->route('dashboard')->with('error', 'Candidate not found.');
+            return redirect()->route('dashboard')->with('error', __('Candidate not found.'));
         }
 
         if ($candidate->room->host_id !== auth()->id()) {
-            return redirect()->route('dashboard')->with('error', 'You do not have access to this candidate.');
+            return redirect()->route('dashboard')->with('error', __('You do not have access to this candidate.'));
         }
 
         $request->validate([
@@ -115,26 +108,23 @@ class CandidateController extends Controller
             'photo_url' => $photoPath,
         ]);
 
-        return redirect()->route('rooms.show', $candidate->room->room_id);
+        return redirect()->route('rooms.show', $candidate->room->room_id)->with('success', __('Candidate updated successfully!'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $candidate_id)
     {
         $candidate = Candidate::where('candidate_id', $candidate_id)->firstOrFail();
 
         if (!$candidate) {
-            return redirect()->route('dashboard')->with('error', 'Candidate not found.');
+            return redirect()->route('dashboard')->with('error', __('Candidate not found.'));
         }
         if ($candidate->room->host_id !== auth()->id()) {
-            return redirect()->route('dashboard')->with('error', 'You do not have access to this candidate.');
+            return redirect()->route('dashboard')->with('error', __('You do not have access to this candidate.'));
         }
 
 
         if ($candidate->room->candidates()->count() <= 2) {
-            return redirect()->route('rooms.show', $candidate->room->room_id)->with('error', 'A room must have at least two candidates.');
+            return redirect()->route('rooms.show', $candidate->room->room_id)->with('error', __('A room must have at least two candidates.'));
         }
 
         if ($candidate->photo_url) {
@@ -143,8 +133,6 @@ class CandidateController extends Controller
 
         $candidate->delete();
 
-        return redirect()->route('rooms.show', $candidate->room->room_id);
+        return redirect()->route('rooms.show', $candidate->room->room_id)->with('success', __('Candidate removed successfully!'));
     }
-
-
 }

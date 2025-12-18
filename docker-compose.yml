@@ -9,28 +9,37 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./:/var/www
+      - ./:/app
     environment:
-      APP_ENV: production
-      APP_DEBUG: 'false'
-      APP_URL: http://localhost:8000
+      APP_ENV: local
+      APP_DEBUG: 'true'
+      APP_URL: ttp://localhost:8000
 
       DB_CONNECTION: pgsql
-      DB_HOST: db.bnnmcvpyrsemmkcfacvr.supabase.co
-      DB_PORT: '6543'
-      DB_DATABASE: evotes
-      DB_USERNAME: postgres.bnnmcvpyrsemmkcfacvr
-      DB_PASSWORD: d9Kb4ADwuhrJ7cw
-      DATABASE_URL: postgresql://postgres.bnnmcvpyrsemmkcfacvr:d9Kb4ADwuhrJ7cw@aws-1-ap-northeast-1.pooler.supabase.com:6543/postgres
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DATABASE_URL: ${DATABASE_URL}
       DB_SSLMODE: require
+
+      FILESYSTEM_DISK: s3
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_BUCKET: ${AWS_BUCKET}
+      AWS_USE_PATH_STYLE_ENDPOINT: ${AWS_USE_PATH_STYLE_ENDPOINT}
+      AWS_ENDPOINT: ${AWS_ENDPOINT}
+      AWS_URL: ${AWS_URL}
 
     command: php artisan serve --host=0.0.0.0 --port=8000
 
   node:
     image: node:20
-    working_dir: /var/www
+    working_dir: /app
     volumes:
-      - ./:/var/www
+      - ./:/app
     ports:
       - "5173:5173"
-    command: sh -c "npm install && npm run dev -- --host"
+    command: ["sh", "-c", "npm install && npm run dev -- --host"]

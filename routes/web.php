@@ -7,10 +7,18 @@ use App\Http\Controllers\VoteController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AIController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', function () {
     return view('pages.welcome');
 });
+
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'id'])) {
+        Session::put('locale', $locale);
+    }
+    return back();
+})->name('switch.language');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
