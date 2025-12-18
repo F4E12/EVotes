@@ -26,14 +26,13 @@ class VoteController extends Controller
         $room = Room::where('unique_token', $request->token)->first();
 
         if (!$room) {
-            return back()->with('error', 'Invalid token or Room not found.');
+            return back()->with('error', __('Invalid token or Room not found.'));
         }
 
         if (now() > $room->end_date) {
-            return back()->with('error', 'Voting session for this room has ended.');
+            return back()->with('error', __('Voting session for this room has ended.'));
         }
 
-        // Record the user as a room participant
         RoomParticipant::firstOrCreate([
             'user_id' => Auth::id(),
             'room_id' => $room->id,
@@ -47,7 +46,7 @@ class VoteController extends Controller
         $room = Room::where('room_id', $room_id)->firstOrFail();
 
         if (now() > $room->end_date) {
-            return redirect()->route('rooms.results', $room->room_id)->with('error', 'The voting period has ended.');
+            return redirect()->route('rooms.results', $room->room_id)->with('error', __('The voting period has ended.'));
         }
 
         $hasVoted = Vote::where('voter_id', Auth::id())
@@ -55,7 +54,7 @@ class VoteController extends Controller
             ->exists();
 
         if ($hasVoted) {
-            return redirect()->route('rooms.results', $room->room_id)->with('error', 'You have already voted in this room.');
+            return redirect()->route('rooms.results', $room->room_id)->with('error', __('You have already voted in this room.'));
         }
 
         $candidates = Candidate::where('room_id', $room->id)->get();
@@ -68,7 +67,7 @@ class VoteController extends Controller
         $room = Room::where('room_id', $room_id)->firstOrFail();
 
         if (now() > $room->end_date) {
-            return back()->with('error', 'Voting period has ended! Your vote was not saved.');
+            return back()->with('error', __('Voting period has ended! Your vote was not saved.'));
         }
 
         $request->validate([
@@ -82,7 +81,7 @@ class VoteController extends Controller
             ->first();
 
         if ($existingVote) {
-            return back()->with('error', 'You have already voted!');
+            return back()->with('error', __('You have already voted!'));
         }
 
         Vote::create([
@@ -92,7 +91,7 @@ class VoteController extends Controller
             'voted_at' => now(),
         ]);
 
-        return redirect()->route('history')->with('success', 'Vote recorded successfully!');
+        return redirect()->route('history')->with('success', __('Vote recorded successfully!'));
     }
 
     public function history()

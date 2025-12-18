@@ -64,13 +64,13 @@ class RoomController extends Controller
             $photoFile = null;
             if (isset($candidateData['photo_url']) && $candidateData['photo_url'] instanceof \Illuminate\Http\UploadedFile) {
                 $photoFile = $candidateData['photo_url'];
-                unset($candidateData['photo_url']); // Remove from array if it's an UploadedFile, as it will be handled by $photoFile
+                unset($candidateData['photo_url']);
             }
 
             $candidateRequest = new Request($candidateData);
             CandidateController::createCandidate($candidateRequest, $room, $photoFile);
         }
-        return redirect()->route('rooms.show', $room->room_id);
+        return redirect()->route('rooms.show', $room->room_id)->with('success', __('Room created successfully!'));
     }
     public static function generateRoomID()
     {
@@ -89,10 +89,10 @@ class RoomController extends Controller
         $room = Room::where('room_id', $room_id)->firstOrFail();
 
         if (!$room) {
-            return redirect()->route('dashboard')->with('error', 'Room not found.');
+            return redirect()->route('dashboard')->with('error', __('Room not found.'));
         }
         if ($room->host_id !== auth()->id()) {
-            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+            return redirect()->route('dashboard')->with('error', __('You do not have access to this room.'));
         }
 
         $candidates = $room->candidates->map(function ($candidate) {
@@ -113,11 +113,11 @@ class RoomController extends Controller
         $room = Room::where('room_id', $room_id)->firstOrFail();
 
         if (!$room) {
-            return redirect()->route('dashboard')->with('error', 'Room not found.');
+            return redirect()->route('dashboard')->with('error', __('Room not found.'));
         }
 
         if ($room->host_id !== auth()->id()) {
-            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+            return redirect()->route('dashboard')->with('error', __('You do not have access to this room.'));
         }
 
         return view('pages.room.edit', compact('room'));
@@ -131,11 +131,11 @@ class RoomController extends Controller
         $room = Room::where('room_id', $room_id)->firstOrFail();
 
         if (!$room) {
-            return redirect()->route('dashboard')->with('error', 'Room not found.');
+            return redirect()->route('dashboard')->with('error', __('Room not found.'));
         }
 
         if ($room->host_id !== auth()->id()) {
-            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+            return redirect()->route('dashboard')->with('error', __('You do not have access to this room.'));
         }
 
         $request->validate([
@@ -145,11 +145,9 @@ class RoomController extends Controller
             'end_date' => 'required|date|after_or_equal:start_date',
         ]);
 
-
-
         $room->update($request->all());
 
-        return redirect()->route('rooms.show', $room->room_id);
+        return redirect()->route('rooms.show', $room->room_id)->with('success', __('Room updated successfully!'));
     }
 
     /**
@@ -160,13 +158,12 @@ class RoomController extends Controller
         $room = Room::where('room_id', $room_id)->firstOrFail();
 
         if (!$room) {
-            return redirect()->route('dashboard')->with('error', 'Room not found.');
+            return redirect()->route('dashboard')->with('error', __('Room not found.'));
         }
         if ($room->host_id !== auth()->id()) {
-            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+            return redirect()->route('dashboard')->with('error', __('You do not have access to this room.'));
         }
 
-        // Hapus foto kandidat sebelum menghapus kandidat
         foreach ($room->candidates as $candidate) {
             if ($candidate->photo_url) {
                 Storage::disk('public')->delete($candidate->photo_url);
@@ -175,7 +172,7 @@ class RoomController extends Controller
 
         $room->delete();
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success', __('Room deleted successfully!'));
 
     }
 
@@ -187,11 +184,11 @@ class RoomController extends Controller
         $room = Room::where('room_id', $room_id)->firstOrFail();
 
         if (!$room) {
-            return redirect()->route('dashboard')->with('error', 'Room not found.');
+            return redirect()->route('dashboard')->with('error', __('Room not found.'));
         }
 
         if ($room->host_id !== auth()->id()) {
-            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+            return redirect()->route('dashboard')->with('error', __('You do not have access to this room.'));
         }
 
         $room->update(['end_date' => now()]);
@@ -200,7 +197,7 @@ class RoomController extends Controller
             $room->update(['start_date' => now()]);
         }
 
-        return redirect()->route('rooms.show', parameters: $room->room_id);
+        return redirect()->route('rooms.show', parameters: $room->room_id)->with('success', __('Room is closed.'));
     }
 
     /**
@@ -211,11 +208,11 @@ class RoomController extends Controller
         $room = Room::where('room_id', $room_id)->firstOrFail();
 
         if (!$room) {
-            return redirect()->route('dashboard')->with('error', 'Room not found.');
+            return redirect()->route('dashboard')->with('error', __('Room not found.'));
         }
 
         if ($room->host_id !== auth()->id()) {
-            return redirect()->route('dashboard')->with('error', 'You do not have access to this room.');
+            return redirect()->route('dashboard')->with('error', __('You do not have access to this room.'));
         }
 
         $room->update(['is_revealed' => !$room->is_revealed ? DB::raw('True') : DB::raw('False')]);
@@ -247,6 +244,4 @@ class RoomController extends Controller
             return 'ended';
         }
     }
-
-
 }
