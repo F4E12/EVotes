@@ -73,5 +73,20 @@
     "Cancel": "Batal",
     "Create Room & Generate Token": "Buat Ruang & Buat Token",
     "Candidate": "Kandidat",
-    "Are you sure you want to remove this candidate?": "Apakah Anda yakin ingin menghapus kandidat ini?"
+    "Are you sure you want to remove this candidate?": "Apakah Anda yakin ingin menghapus kandidat ini?",
+    "Voting History": "Riwayat Voting",
+    "A record of all elections you have participated in.": "Rekaman semua pemilihan yang telah Anda ikuti.",
+    "Total Votes Cast:": "Total Suara Masuk:",
+    "No votes recorded": "Tidak ada suara terekam",
+    "You haven't cast any votes yet. Join a room to get started.": "Anda belum memberikan suara. Bergabunglah dengan ruang untuk memulai.",
+    "Join a Room": "Gabung Ruang",
+    "Election Details": "Detail Pemilihan",
+    "Your Selection": "Pilihan Anda",
+    "Date": "Tanggal",
+    "Actions": "Tindakan",
+    "Room Deleted": "Ruang Dihapus",
+    "Unknown": "Tidak Diketahui",
+    "Confirmed": "Terkonfirmasi",
+    "View Results": "Lihat Hasil",
+    "Expired": "Kedaluwarsa"
 }

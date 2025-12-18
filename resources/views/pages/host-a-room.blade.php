@@ -84,7 +84,7 @@
                         </div>
 
                         <div id="candidates-container" class="space-y-4">
-                            </div>
+                        </div>
                     </div>
 
                     <div class="bg-gray-50 px-6 py-4 flex items-center justify-end border-t border-gray-100">
