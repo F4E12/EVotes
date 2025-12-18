@@ -37,6 +37,8 @@ RUN rm -rf public/hot node_modules
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+RUN php artisan storage:link || true
+
 # Permission
 RUN chown -R www-data:www-data storage bootstrap/cache
 
