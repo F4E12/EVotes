@@ -10,6 +10,7 @@
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="{{ asset('icon.svg') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -55,21 +56,26 @@
                 <div class="hidden sm:flex items-center sm:ml-6">
 
                     <div class="relative mr-4" x-data="{ langOpen: false }">
-                        <button @click="langOpen = !langOpen" class="flex items-center text-sm font-bold text-gray-500 hover:text-blue-600 focus:outline-none transition">
+                        <button @click="langOpen = !langOpen"
+                            class="flex items-center text-sm font-bold text-gray-500 hover:text-blue-600 focus:outline-none transition">
                             <span>{{ strtoupper(app()->getLocale()) }}</span>
-                            <svg class="h-4 w-4 ml-1 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            <svg class="h-4 w-4 ml-1 fill-current" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
                             </svg>
                         </button>
 
-                        <div x-show="langOpen"
-                             @click.away="langOpen = false"
-                             class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-50"
-                             style="display: none;">
-                            <a href="{{ route('switch.language', 'id') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <div x-show="langOpen" @click.away="langOpen = false"
+                            class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-50"
+                            style="display: none;">
+                            <a href="{{ route('switch.language', 'id') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 🇮🇩 Indonesia
                             </a>
-                            <a href="{{ route('switch.language', 'en') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <a href="{{ route('switch.language', 'en') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 🇺🇸 English
                             </a>
                         </div>
@@ -180,16 +186,16 @@
                 </div>
                 <div class="space-y-1">
                     <a href="{{ route('switch.language', 'id') }}"
-                       class="block pl-3 pr-4 py-2 border-l-4 {{ app()->getLocale() == 'id' ? 'border-blue-500 text-blue-700 bg-blue-50' : 'border-transparent text-gray-600 hover:bg-gray-50' }} text-base font-medium">
+                        class="block pl-3 pr-4 py-2 border-l-4 {{ app()->getLocale() == 'id' ? 'border-blue-500 text-blue-700 bg-blue-50' : 'border-transparent text-gray-600 hover:bg-gray-50' }} text-base font-medium">
                         🇮🇩 Indonesia
                     </a>
                     <a href="{{ route('switch.language', 'en') }}"
-                       class="block pl-3 pr-4 py-2 border-l-4 {{ app()->getLocale() == 'en' ? 'border-blue-500 text-blue-700 bg-blue-50' : 'border-transparent text-gray-600 hover:bg-gray-50' }} text-base font-medium">
+                        class="block pl-3 pr-4 py-2 border-l-4 {{ app()->getLocale() == 'en' ? 'border-blue-500 text-blue-700 bg-blue-50' : 'border-transparent text-gray-600 hover:bg-gray-50' }} text-base font-medium">
                         🇺🇸 English
                     </a>
                 </div>
             </div>
-            </div>
+        </div>
     </nav>
 
     @if (isset($header))
@@ -210,7 +216,8 @@
 
     <footer class="bg-gray-800 text-white py-8 mt-auto">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-gray-400 text-sm">&copy; {{ date('Y') }} EVotes. {{ __('The Secure Voting Platform.') }}</p>
+            <p class="text-gray-400 text-sm">&copy; {{ date('Y') }} EVotes.
+                {{ __('The Secure Voting Platform.') }}</p>
         </div>
     </footer>
     @stack('scripts')
