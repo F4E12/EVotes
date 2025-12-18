@@ -30,9 +30,9 @@
                             <span class="uppercase tracking-wide text-sm">{{ __('Copy') }}</span>
                         </button>
                     </div>
-
+                    
                     <p class="mt-4 text-gray-500 text-sm">
-                        {{ __('Share this code or direct link:') }} <span class="font-mono text-blue-600 bg-blue-50 px-1 rounded">{{ url('/join') }}</span>
+                        {{ __('Share this code or direct link:') }} <span class="font-mono text-blue-600 bg-blue-50 px-1 rounded">{{ url('/join', $room->share_code) }}</span>
                     </p>
                     <p id="copy-feedback" class="text-green-600 text-sm font-bold mt-2 opacity-0 transition-opacity">
                         {{ __('Copied to clipboard!') }}

@@ -20,6 +20,8 @@ Route::get('/lang/{locale}', function ($locale) {
     return back();
 })->name('switch.language');
 
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -29,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/host-a-room', [RoomController::class, 'create'])->name('host-a-room');
 
     //VOTING ROUTES
+    Route::get('/join/{share_code}', [VoteController::class, 'joinViaDirectLink'])->name('vote.direct');
     Route::get('/join-a-room', [VoteController::class, 'showJoinForm'])->name('join-a-room');
     Route::post('/join-a-room', [VoteController::class, 'processJoin'])->name('join.process');
     Route::get('/history', [VoteController::class, 'history'])->name('history');
