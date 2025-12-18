@@ -210,7 +210,7 @@
 
     <footer class="bg-gray-800 text-white py-8 mt-auto">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-gray-400 text-sm">&copy; {{ date('Y') }} EVotes. The Secure Voting Platform.</p>
+            <p class="text-gray-400 text-sm">&copy; {{ date('Y') }} EVotes. {{ __('The Secure Voting Platform.') }}</p>
         </div>
     </footer>
     @stack('scripts')
