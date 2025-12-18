@@ -105,9 +105,9 @@
                                                 <div class="flex items-center">
                                                     <div class="h-10 w-10 flex-shrink-0">
                                                         @if ($vote->candidate && $vote->candidate->photo_url)
-                                                            <img class="h-10 w-10 rounded-full object-cover border border-gray-200"
-                                                                src="{{ filter_var($vote->candidate->photo_url, FILTER_VALIDATE_URL) ? $vote->candidate->photo_url : asset('storage/' . $vote->candidate->photo_url) }}"
-                                                                alt="">
+                                                                <img class="h-10 w-10 rounded-full object-cover border border-gray-200"
+                                                                    src="{{ Storage::url($vote->candidate->photo_url) }}"
+                                                                    alt="">
                                                         @else
                                                             <div class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold border border-indigo-200">
                                                                 {{ substr($vote->candidate->name ?? '?', 0, 1) }}
