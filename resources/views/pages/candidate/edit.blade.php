@@ -15,28 +15,28 @@
                         @method('PUT')
 
                         <div>
-                            <label for="name" class="block font-medium text-sm text-gray-700">Name</label>
+                            <label for="name" class="block font-medium text-sm text-gray-700">{{ __('Name') }}</label>
                             <input id="name" name="name" type="text" class="mt-1 block w-full"
                                 value="{{ old('name', $candidate->name) }}" required autofocus>
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">
-                            <label for="vision" class="block font-medium text-sm text-gray-700">Vision</label>
+                            <label for="vision" class="block font-medium text-sm text-gray-700">{{ __('Vision') }}</label>
                             <textarea id="vision" name="vision" class="mt-1 block w-full"
                                 required>{{ old('vision', $candidate->vision) }}</textarea>
                             <x-input-error :messages="$errors->get('vision')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">
-                            <label for="mission" class="block font-medium text-sm text-gray-700">Mission</label>
+                            <label for="mission" class="block font-medium text-sm text-gray-700">{{ __('Mission') }}</label>
                             <textarea id="mission" name="mission" class="mt-1 block w-full"
                                 required>{{ old('mission', $candidate->mission) }}</textarea>
                             <x-input-error :messages="$errors->get('mission')" class="mt-2" />
                         </div>
 
                         <div class="mt-4">
-                            <label for="photo_url" class="block font-medium text-sm text-gray-700">Photo</label>
+                            <label for="photo_url" class="block font-medium text-sm text-gray-700">{{ __('Photo') }}</label>
                             @if ($candidate->photo_url)
                                 @if (filter_var($candidate->photo_url, FILTER_VALIDATE_URL))
                                     <img src="{{ $candidate->photo_url }}" alt="{{ $candidate->name }}"
@@ -45,11 +45,11 @@
                                     <img src="{{ asset('storage/' . $candidate->photo_url) }}" alt="{{ $candidate->name }}"
                                         class="w-16 h-16 object-cover rounded-full">
                                 @endif
-                                <p class="text-sm text-gray-600 mt-1">Current Photo</p>
+                                <p class="text-sm text-gray-600 mt-1">{{ __('Current Photo') }}</p>
                             @endif
                             <input id="photo_url" name="photo_url" type="file" class="mt-1 block w-full">
                             <x-input-error :messages="$errors->get('photo_url')" class="mt-2" />
-                            <p class="text-xs text-gray-500 mt-1">Leave blank to keep current photo.</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ __('Leave blank to keep current photo.') }}</p>
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
