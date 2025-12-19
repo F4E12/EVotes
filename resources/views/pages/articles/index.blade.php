@@ -139,7 +139,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($otherArticles as $article)
                             <article
-                                class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200 flex flex-col h-full">
+                                class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200 flex flex-col">
 
                                 <a href="{{ route('articles.show', $article->id) }}"
                                     class="relative h-48 bg-gray-100 overflow-hidden block group">
@@ -184,9 +184,8 @@
                                         </a>
                                     </h4>
 
-                                    <div class="text-gray-500 text-sm line-clamp-3 mb-4 flex-grow">
-                                        {!! Str::limit($article->content, 150) !!}
-
+                                    <div class="text-gray-500 text-sm line-clamp-3 mb-4">
+                                        {{ Str::limit(strip_tags($article->content), 150) }}
                                     </div>
 
                                     <div class="pt-4 border-t border-gray-100 mt-auto">
