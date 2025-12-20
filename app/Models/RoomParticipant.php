@@ -16,17 +16,11 @@ class RoomParticipant extends Model
         'room_id',
     ];
 
-    /**
-     * Relationship: A participant belongs to a User.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relationship: A participant belongs to a Room.
-     */
     public function room()
     {
         return $this->belongsTo(Room::class);

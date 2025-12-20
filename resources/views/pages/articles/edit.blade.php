@@ -154,10 +154,8 @@
                     </a>
 
                     <button type="submit"
-                            class="inline-flex items-center px-6 py-3 bg-blue-600 border border-transparent rounded-lg
-                                   font-semibold text-xs text-white uppercase tracking-widest
-                                   hover:bg-blue-700 active:bg-blue-900
-                                   focus:outline-none focus:border-blue-900 focus:ring ring-blue-300
+                            class="inline-flex items-center px-6 py-3 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest
+                                   hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300
                                    disabled:opacity-25 transition shadow-md gap-2">
                         {{ __('Publish Article') }}
                     </button>

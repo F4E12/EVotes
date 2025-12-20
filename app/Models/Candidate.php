@@ -20,19 +20,10 @@ class Candidate extends Model
         'mission',
     ];
 
-    // Relationships
-
-    /**
-     * A Candidate belongs to a Room.
-     */
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
     }
-
-    /**
-     * A Candidate can receive many Votes.
-     */
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);

@@ -30,20 +30,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [RoomController::class, 'index'])->name('dashboard');
     Route::get('/host-a-room', [RoomController::class, 'create'])->name('host-a-room');
 
-    //VOTING ROUTES
     Route::get('/join/{share_code}', [VoteController::class, 'joinViaDirectLink'])->name('vote.direct');
     Route::get('/join-a-room', [VoteController::class, 'showJoinForm'])->name('join-a-room');
     Route::post('/join-a-room', [VoteController::class, 'processJoin'])->name('join.process');
     Route::get('/history', [VoteController::class, 'history'])->name('history');
 
-    // Routes that require room participation
     Route::middleware('room.participant')->group(function () {
         Route::get('/vote/{room_id}', [VoteController::class, 'showVotingBooth'])->name('vote.booth');
         Route::post('/vote/{room_id}', [VoteController::class, 'storeVote'])->name('vote.store');
         Route::get('rooms/{room_id}/results', [VoteController::class, 'showRealCount'])->name('rooms.results');
     });
 
-    //ROOM & CANDIDATE MANAGEMENT ROUTES
     Route::post('rooms', action: [RoomController::class, 'store'])->name('rooms.store');
     Route::get('rooms/{room_id}', [RoomController::class, 'show'])->name('rooms.show');
     Route::get('rooms/{room_id}/edit', [RoomController::class, 'edit'])->name('rooms.edit');

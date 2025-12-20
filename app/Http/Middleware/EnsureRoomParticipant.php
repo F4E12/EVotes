@@ -26,12 +26,10 @@ class EnsureRoomParticipant
             return redirect()->route('dashboard')->with('error', 'Room not found.');
         }
 
-        // Check if the user is the room owner (they should always have access)
         if ($room->user_id === Auth::id()) {
             return $next($request);
         }
 
-        // Check if user is a participant in this room
         $isParticipant = RoomParticipant::where('user_id', Auth::id())
             ->where('room_id', $room->id)
             ->exists();

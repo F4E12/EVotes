@@ -184,10 +184,10 @@
                         datasets: [{
                             label: '{{ __('Total Votes') }}',
                             data: votes,
-                            backgroundColor: 'rgba(59, 130, 246, 0.8)', // Tailwind Blue-500
-                            borderColor: 'rgba(37, 99, 235, 1)', // Tailwind Blue-600
+                            backgroundColor: 'rgba(59, 130, 246, 0.8)', 
+                            borderColor: 'rgba(37, 99, 235, 1)', 
                             borderWidth: 0,
-                            borderRadius: 8, // Soft rounded bars
+                            borderRadius: 8, 
                             barPercentage: 0.6
                         }]
                     },
@@ -197,7 +197,7 @@
                         plugins: {
                             legend: { display: false },
                             tooltip: {
-                                backgroundColor: 'rgba(17, 24, 39, 0.9)', // Dark Gray
+                                backgroundColor: 'rgba(17, 24, 39, 0.9)', 
                                 padding: 12,
                                 titleFont: { size: 14, family: "'Figtree', sans-serif" },
                                 bodyFont: { size: 14, family: "'Figtree', sans-serif" },

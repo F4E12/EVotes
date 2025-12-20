@@ -19,24 +19,15 @@ class Article extends Model
         'published_at',
     ];
 
-    // The published_at column should be treated as a date instance
     protected $casts = [
         'published_at' => 'datetime',
     ];
 
-    // Relationships
-
-    /**
-     * An Article belongs to a User (the author).
-     */
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
     }
 
-    /**
-     * An Article may optionally belong to a Room.
-     */
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class, 'related_room_id');

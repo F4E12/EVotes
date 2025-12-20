@@ -21,27 +21,16 @@ class Vote extends Model
         'voted_at' => 'datetime',
     ];
 
-    // Relationships
-
-    /**
-     * A Vote belongs to a Room.
-     */
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
     }
 
-    /**
-     * A Vote belongs to a Candidate.
-     */
     public function candidate(): BelongsTo
     {
         return $this->belongsTo(Candidate::class);
     }
 
-    /**
-     * A Vote belongs to a User (the voter).
-     */
     public function voter(): BelongsTo
     {
         return $this->belongsTo(User::class, 'voter_id');

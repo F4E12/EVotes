@@ -28,27 +28,16 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // Relationships
-
-    /**
-     * A User can host many Rooms.
-     */
     public function rooms(): HasMany
     {
         return $this->hasMany(Room::class, 'host_id');
     }
 
-    /**
-     * A User can write many Articles.
-     */
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class, 'author_id');
     }
 
-    /**
-     * A User can cast many Votes.
-     */
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class, 'voter_id');
