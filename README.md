@@ -1,5 +1,6 @@
 
 # Evotes
+<img width="1600" height="767" alt="image" src="https://github.com/user-attachments/assets/ce06bf85-ccd0-429d-afad-1b759e2b95f0" />
 
 ## Getting Started
 
