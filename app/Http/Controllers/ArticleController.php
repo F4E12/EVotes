@@ -31,7 +31,7 @@ class ArticleController extends Controller
             'thumbnail' => 'nullable|image|max:2048',
         ]);
 
-        $path = $request->file('thumbnail')->store('thumbnails', 's3');
+        $path = $request->file('thumbnail')->store('thumbnails', 'public');
 
         Article::create([
             'author_id' => Auth::id(),
@@ -53,14 +53,16 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
-        if ($article->author_id !== Auth::id()) abort(403);
+        if ($article->author_id !== Auth::id())
+            abort(403);
         $rooms = Room::all();
         return view('pages.articles.edit', compact('article', 'rooms'));
     }
 
     public function update(Request $request, Article $article)
     {
-        if ($article->author_id !== Auth::id()) abort(403);
+        if ($article->author_id !== Auth::id())
+            abort(403);
 
         $request->validate([
             'title' => 'required|string|max:255',
@@ -87,7 +89,8 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     {
-        if ($article->author_id !== Auth::id()) abort(403);
+        if ($article->author_id !== Auth::id())
+            abort(403);
 
         if ($article->thumbnail_url) {
             Storage::disk('public')->delete($article->thumbnail_url);

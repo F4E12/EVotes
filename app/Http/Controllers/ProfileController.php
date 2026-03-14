@@ -22,29 +22,28 @@ class ProfileController extends Controller
         ]);
     }
 
-public function update(ProfileUpdateRequest $request): RedirectResponse
-{
-    $user = $request->user();
-    $user->fill($request->validated());
+    public function update(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $user = $request->user();
+        $user->fill($request->validated());
 
-    if ($request->hasFile('profile_pic')) {
-        if ($user->profile_pic_url) {
-            Storage::disk('public')->delete($user->profile_pic_url);
+        if ($request->hasFile('profile_pic')) {
+            if ($user->profile_pic_url) {
+                Storage::disk('public')->delete($user->profile_pic_url);
+            }
+
+            $path = $request->file('profile_pic')->store('avatars', 'public');
+            $user->profile_pic_url = $path;
         }
-        
-        // $path = $request->file('profile_pic')->store('avatars', 'public');
-        $path = $request->file('profile_pic')->store('avatars', 's3');
-        $user->profile_pic_url = $path; 
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
-
-    if ($user->isDirty('email')) {
-        $user->email_verified_at = null;
-    }
-
-    $user->save();
-
-    return Redirect::route('profile.edit')->with('status', 'profile-updated');
-}
 
     /**
      * Delete the user's account.
