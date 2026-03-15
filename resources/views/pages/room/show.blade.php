@@ -126,8 +126,13 @@
 
                                         <div class="flex-shrink-0">
                                             @if ($candidate->photo_url)
+                                                @php
+                                                    $photoUrl = filter_var($candidate->photo_url, FILTER_VALIDATE_URL)
+                                                        ? $candidate->photo_url
+                                                        : Storage::url($candidate->photo_url);
+                                                @endphp
                                                 <img class="h-16 w-16 rounded-full object-cover border-2 border-gray-200"
-                                                     src="{{ Storage::url($candidate->photo_url) }}"
+                                                     src="{{ $photoUrl }}"
                                                      alt="{{ $candidate->name }}">
                                             @else
                                                 <div class="h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 font-bold text-xl border-2 border-gray-300">

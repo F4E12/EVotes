@@ -41,7 +41,12 @@
                             <label for="photo_url"
                                 class="block font-medium text-sm text-gray-700">{{ __('Photo') }}</label>
                             @if ($candidate->photo_url)
-                                <img src="{{ Storage::url($candidate->photo_url) }}" alt="{{ $candidate->name }}"
+                                @php
+                                    $photoUrl = filter_var($candidate->photo_url, FILTER_VALIDATE_URL)
+                                        ? $candidate->photo_url
+                                        : Storage::url($candidate->photo_url);
+                                @endphp
+                                <img src="{{ $photoUrl }}" alt="{{ $candidate->name }}"
                                     class="w-16 h-16 object-cover rounded-full">
                                 <p class="text-sm text-gray-600 mt-1">{{ __('Current Photo') }}</p>
                             @endif

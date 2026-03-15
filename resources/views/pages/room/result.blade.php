@@ -103,7 +103,12 @@
                                                         <div class="flex items-center">
                                                             <div class="h-12 w-12 shrink-0">
                                                                 @if ($candidate->photo_url)
-                                                                       <img src="{{ Storage::url($candidate->photo_url) }}"
+                                                                       @php
+                                                                           $candidatePhotoUrl = filter_var($candidate->photo_url, FILTER_VALIDATE_URL)
+                                                                               ? $candidate->photo_url
+                                                                               : Storage::url($candidate->photo_url);
+                                                                       @endphp
+                                                                       <img src="{{ $candidatePhotoUrl }}"
                                                                            class="h-12 w-12 rounded-full object-cover border-2 border-white shadow-sm ring-1 ring-gray-100" alt="">
                                                                 @else
                                                                     <div class="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center border-2 border-white shadow-sm text-gray-400 font-bold">

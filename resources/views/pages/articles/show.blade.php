@@ -17,8 +17,13 @@
             <article class="bg-white overflow-hidden shadow-sm sm:rounded-[2.5rem] border border-gray-200 px-4 sm:px-8">
                 <div class="h-4"></div>
                 @if ($article->thumbnail_url)
+                    @php
+                        $thumbnailUrl = filter_var($article->thumbnail_url, FILTER_VALIDATE_URL)
+                            ? $article->thumbnail_url
+                            : Storage::url($article->thumbnail_url);
+                    @endphp
                     <div class="relative w-full h-64 md:h-96 bg-gray-100 group">
-                        <img src="{{ Storage::url($article->thumbnail_url) }}" alt="{{ $article->title }}"
+                        <img src="{{ $thumbnailUrl }}" alt="{{ $article->title }}"
                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none">
                         </div>
@@ -74,17 +79,17 @@
                 </div>
 
                 {{-- @if (auth()->id() === $article->author_id)
-                    <div class="bg-gray-50 px-8 py-6 border-t border-gray-100 flex justify-end">
-                        <a href="{{ route('articles.edit', $article->id) }}"
-                            class="inline-flex items-center px-6 py-2.5 bg-white border border-gray-300 rounded-xl font-bold text-sm text-gray-700 shadow-sm hover:bg-gray-50 hover:text-blue-600 hover:border-blue-300 transition-all">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                </path>
-                            </svg>
-                            {{ __('Edit Article') }}
-                        </a>
-                    </div>
+                <div class="bg-gray-50 px-8 py-6 border-t border-gray-100 flex justify-end">
+                    <a href="{{ route('articles.edit', $article->id) }}"
+                        class="inline-flex items-center px-6 py-2.5 bg-white border border-gray-300 rounded-xl font-bold text-sm text-gray-700 shadow-sm hover:bg-gray-50 hover:text-blue-600 hover:border-blue-300 transition-all">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                            </path>
+                        </svg>
+                        {{ __('Edit Article') }}
+                    </a>
+                </div>
                 @endif --}}
 
             </article>

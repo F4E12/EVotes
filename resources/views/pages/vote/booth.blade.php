@@ -25,8 +25,12 @@
 
                         <div class="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
                             @if ($candidate->photo_url)
-                                <img src="{{ Storage::url($candidate->photo_url) }}" alt="{{ $candidate->name }}"
-                                    class="w-full h-full object-cover">
+                                @php
+                                    $photoUrl = filter_var($candidate->photo_url, FILTER_VALIDATE_URL)
+                                        ? $candidate->photo_url
+                                        : Storage::url($candidate->photo_url);
+                                @endphp
+                                <img src="{{ $photoUrl }}" alt="{{ $candidate->name }}" class="w-full h-full object-cover">
                             @else
                                 <div class="text-gray-400 flex flex-col items-center">
                                     <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">

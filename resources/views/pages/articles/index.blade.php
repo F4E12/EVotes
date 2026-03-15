@@ -61,7 +61,12 @@
                                         <tr>
                                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 @if ($article->thumbnail_url)
-                                                    <img src="{{ Storage::url($article->thumbnail_url) }}"
+                                                    @php
+                                                        $thumbnailUrl = filter_var($article->thumbnail_url, FILTER_VALIDATE_URL)
+                                                            ? $article->thumbnail_url
+                                                            : Storage::url($article->thumbnail_url);
+                                                    @endphp
+                                                    <img src="{{ $thumbnailUrl }}"
                                                         alt="Thumb"
                                                         class="h-10 w-10 rounded object-cover border border-gray-100">
                                                 @else
@@ -144,7 +149,12 @@
                                 <a href="{{ route('articles.show', $article->id) }}"
                                     class="relative h-48 bg-gray-100 overflow-hidden block group">
                                     @if ($article->thumbnail_url)
-                                        <img src="{{ Storage::url($article->thumbnail_url) }}"
+                                        @php
+                                            $thumbnailUrl = filter_var($article->thumbnail_url, FILTER_VALIDATE_URL)
+                                                ? $article->thumbnail_url
+                                                : Storage::url($article->thumbnail_url);
+                                        @endphp
+                                        <img src="{{ $thumbnailUrl }}"
                                             alt="{{ $article->title }}"
                                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                                     @else
